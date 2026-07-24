@@ -23,14 +23,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Deploy via FTP
-        uses: airvzxf/ftp-deployment-action@latest
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
           server: ${{ secrets.FTP_HOST }}
-          user: ${{ secrets.FTP_USER }}
+          username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
-          local_dir: ./
-          remote_dir: /public_html/
-          delete: false
+          local-dir: ./
+          server-dir: /public_html/
           exclude: |
             .git/
             .gitignore
