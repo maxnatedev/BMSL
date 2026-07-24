@@ -71,6 +71,10 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
         .form-group select, .form-group input[type=file] { width: 100%; padding: 10px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
         .btn { padding: 10px 24px; background: #F7941D; color: #fff; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .btn:hover { background: #e08515; }
+        .file-input-wrap { display: flex; align-items: center; gap: 10px; }
+        .btn-file { background: #0B1F33; }
+        .btn-file:hover { background: #1a3a5c; }
+        .file-name { font-size: 0.85rem; color: #6B7280; }
     </style>
 </head>
 <body>
@@ -110,8 +114,17 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="image">File (max 250KB, WebP preferred)</label>
-                    <input type="file" name="image" id="image" accept="image/webp,image/jpeg,image/png" required>
+                    <label>File (max 250KB, WebP preferred)</label>
+                    <div class="file-input-wrap">
+                        <input type="file" name="image" id="image" accept="image/webp,image/jpeg,image/png" required hidden>
+                        <button type="button" class="btn btn-file" onclick="document.getElementById('image').click()">Choose File</button>
+                        <span class="file-name" id="fileName">No file chosen</span>
+                    </div>
+                    <script>
+                    document.getElementById('image').addEventListener('change', function() {
+                        document.getElementById('fileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';
+                    });
+                    </script>
                 </div>
                 <button type="submit" class="btn">Upload</button>
             </div>
