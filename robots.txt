@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Sitemap: https://bmsl.co.tz/sitemap.xml
+
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /uploads/

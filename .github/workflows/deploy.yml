@@ -1,0 +1,39 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP Lint
+        run: find . -name "*.php" -not -path "./vendor/*" -exec php -l {} \;
+      - name: Validate HTML
+        run: |
+          sudo apt-get install -y html5validator
+          find . -name "*.php" -exec html5validator {} \; || true
+
+  deploy:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy via FTP
+        uses: airvzxf/ftp-deployment-action@latest
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          user: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          local_dir: ./
+          remote_dir: /public_html/
+          delete: false
+          exclude: |
+            .git/
+            .gitignore
+            .env
+            README.md
+            .github/
+            uploads/
