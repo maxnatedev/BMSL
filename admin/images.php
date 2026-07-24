@@ -75,6 +75,7 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
         .btn-file { background: #0B1F33; }
         .btn-file:hover { background: #1a3a5c; }
         .file-name { font-size: 0.85rem; color: #6B7280; }
+        .file-input-hidden { position:fixed;top:-999px;left:-999px;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none; }
     </style>
 </head>
 <body>
@@ -116,7 +117,7 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                 <div class="form-group">
                     <label>File (max 250KB, WebP preferred)</label>
                     <div class="file-input-wrap">
-                        <input type="file" name="image" id="image" accept="image/webp,image/jpeg,image/png" required hidden>
+                        <input type="file" name="image" id="image" accept="image/webp,image/jpeg,image/png" required class="file-input-hidden">
                         <button type="button" class="btn btn-file" onclick="document.getElementById('image').click()">Choose File</button>
                         <span class="file-name" id="fileName">No file chosen</span>
                     </div>
