@@ -136,52 +136,68 @@ require_once __DIR__ . '/includes/header.php';
         <p class="section-subtitle animate-in">Comprehensive mining, industrial, and HSE solutions tailored to your needs.</p>
         <div class="services-grid">
             <div class="service-card animate-scale">
-                <div class="service-icon">&#9672;</div>
-                <h3>PPE Supply</h3>
-                <p>High-quality personal protective equipment sourced from trusted manufacturers to ensure worker safety.</p>
-                <button class="btn btn-primary btn-sm" data-modal="modal-ppe">Read More</button>
+                <img src="assets/images/service-ppe.webp" alt="PPE Supply" class="service-image" loading="lazy">
+                <div class="service-body">
+                    <h3>PPE Supply</h3>
+                    <p>High-quality personal protective equipment sourced from trusted manufacturers to ensure worker safety.</p>
+                    <button class="btn btn-primary btn-sm" data-modal="modal-ppe">Read More</button>
+                </div>
             </div>
             <div class="service-card animate-scale">
-                <div class="service-icon">&#9673;</div>
-                <h3>Maintenance</h3>
-                <p>Comprehensive maintenance services for mining and industrial equipment to maximize uptime and reliability.</p>
-                <button class="btn btn-primary btn-sm" data-modal="modal-maintenance">Read More</button>
+                <img src="assets/images/service-maintenance.webp" alt="Maintenance" class="service-image" loading="lazy">
+                <div class="service-body">
+                    <h3>Maintenance</h3>
+                    <p>Comprehensive maintenance services for mining and industrial equipment to maximize uptime and reliability.</p>
+                    <button class="btn btn-primary btn-sm" data-modal="modal-maintenance">Read More</button>
+                </div>
             </div>
             <div class="service-card animate-scale">
-                <div class="service-icon">&#9651;</div>
-                <h3>Construction</h3>
-                <p>Industrial and commercial construction services delivered with precision, safety, and efficiency.</p>
-                <button class="btn btn-primary btn-sm" data-modal="modal-construction">Read More</button>
+                <img src="assets/images/service-construction.webp" alt="Construction" class="service-image" loading="lazy">
+                <div class="service-body">
+                    <h3>Construction</h3>
+                    <p>Industrial and commercial construction services delivered with precision, safety, and efficiency.</p>
+                    <button class="btn btn-primary btn-sm" data-modal="modal-construction">Read More</button>
+                </div>
             </div>
             <div class="service-card animate-scale">
-                <div class="service-icon">&#9670;</div>
-                <h3>Fabrication</h3>
-                <p>Custom metal fabrication and welding services for industrial applications and infrastructure projects.</p>
-                <button class="btn btn-primary btn-sm" data-modal="modal-fabrication">Read More</button>
+                <img src="assets/images/service-fabrication.webp" alt="Fabrication" class="service-image" loading="lazy">
+                <div class="service-body">
+                    <h3>Fabrication</h3>
+                    <p>Custom metal fabrication and welding services for industrial applications and infrastructure projects.</p>
+                    <button class="btn btn-primary btn-sm" data-modal="modal-fabrication">Read More</button>
+                </div>
             </div>
             <div class="service-card animate-scale">
-                <div class="service-icon">&#9679;</div>
-                <h3>Electrical Installation</h3>
-                <p>Professional electrical installation, wiring, and maintenance services for industrial facilities.</p>
-                <button class="btn btn-primary btn-sm" data-modal="modal-electrical">Read More</button>
+                <img src="assets/images/service-electrical.webp" alt="Electrical Installation" class="service-image" loading="lazy">
+                <div class="service-body">
+                    <h3>Electrical Installation</h3>
+                    <p>Professional electrical installation, wiring, and maintenance services for industrial facilities.</p>
+                    <button class="btn btn-primary btn-sm" data-modal="modal-electrical">Read More</button>
+                </div>
             </div>
             <div class="service-card animate-scale">
-                <div class="service-icon">&#9733;</div>
-                <h3>Branding</h3>
-                <p>Corporate branding and signage solutions that communicate your brand identity effectively.</p>
-                <button class="btn btn-primary btn-sm" data-modal="modal-branding">Read More</button>
+                <img src="assets/images/service-branding.webp" alt="Branding" class="service-image" loading="lazy">
+                <div class="service-body">
+                    <h3>Branding</h3>
+                    <p>Corporate branding and signage solutions that communicate your brand identity effectively.</p>
+                    <button class="btn btn-primary btn-sm" data-modal="modal-branding">Read More</button>
+                </div>
             </div>
             <div class="service-card animate-scale">
-                <div class="service-icon">&#9632;</div>
-                <h3>HSE Consultancy</h3>
-                <p>Health, safety, and environmental consultancy services to ensure compliance and protect your workforce.</p>
-                <button class="btn btn-primary btn-sm" data-modal="modal-hse">Read More</button>
+                <img src="assets/images/service-hse.webp" alt="HSE Consultancy" class="service-image" loading="lazy">
+                <div class="service-body">
+                    <h3>HSE Consultancy</h3>
+                    <p>Health, safety, and environmental consultancy services to ensure compliance and protect your workforce.</p>
+                    <button class="btn btn-primary btn-sm" data-modal="modal-hse">Read More</button>
+                </div>
             </div>
             <div class="service-card animate-scale">
-                <div class="service-icon">&#9671;</div>
-                <h3>Mining Support</h3>
-                <p>Comprehensive mining support services including logistics, equipment supply, and operational assistance.</p>
-                <button class="btn btn-primary btn-sm" data-modal="modal-mining">Read More</button>
+                <img src="assets/images/service-mining.webp" alt="Mining Support" class="service-image" loading="lazy">
+                <div class="service-body">
+                    <h3>Mining Support</h3>
+                    <p>Comprehensive mining support services including logistics, equipment supply, and operational assistance.</p>
+                    <button class="btn btn-primary btn-sm" data-modal="modal-mining">Read More</button>
+                </div>
             </div>
         </div>
     </div>
