@@ -207,17 +207,17 @@ if (!$modal) continue;
     <div class="container">
         <h2 class="animate-in"><?= escape($content['commitment_heading'] ?? 'Our Commitment') ?></h2>
         <p class="animate-in"><?= escape($content['commitment_text'] ?? 'We are committed to the highest standards of safety, quality, and environmental stewardship.') ?></p>
-        <a href="#contact" class="btn btn-outline animate-in">Partner With Us</a>
+        <a href="<?= escape($content['commitment_cta_url'] ?? '#contact') ?>" class="btn btn-outline animate-in"><?= escape($content['commitment_cta_label'] ?? 'Partner With Us') ?></a>
     </div>
 </section>
 
 <section class="section section-alt" id="legal">
     <div class="container">
-        <h2 class="section-title animate-in">Legal & Compliance</h2>
-        <p class="section-subtitle animate-in">We operate with full legal compliance and transparency. Click to view our certifications.</p>
+        <h2 class="section-title animate-in"><?= escape($content['legal_heading'] ?? 'Legal & Compliance') ?></h2>
+        <p class="section-subtitle animate-in"><?= escape($content['legal_subtitle'] ?? 'We operate with full legal compliance and transparency.') ?></p>
         <div class="legal-grid">
-            <div class="legal-card animate-scale" data-modal="modal-cert"><img src="assets/images/certificate.webp" alt="Certificate of Incorporation" loading="lazy"><p>Certificate of Incorporation</p></div>
-            <div class="legal-card animate-scale" data-modal="modal-tra"><img src="assets/images/tra-registration.webp" alt="TRA Registration" loading="lazy"><p>TRA Registration</p></div>
+            <div class="legal-card animate-scale" data-modal="modal-cert"><img src="assets/images/certificate.webp" alt="Certificate of Incorporation" loading="lazy"><p><?= escape($content['legal_card_1'] ?? 'Certificate of Incorporation') ?></p></div>
+            <div class="legal-card animate-scale" data-modal="modal-tra"><img src="assets/images/tra-registration.webp" alt="TRA Registration" loading="lazy"><p><?= escape($content['legal_card_2'] ?? 'TRA Registration') ?></p></div>
         </div>
     </div>
 </section>
@@ -227,8 +227,8 @@ if (!$modal) continue;
 
 <section class="section" id="contact">
     <div class="container">
-        <h2 class="section-title animate-in">Get In Touch</h2>
-        <p class="section-subtitle animate-in">Ready to start your next project? Contact us today for a consultation.</p>
+        <h2 class="section-title animate-in"><?= escape($content['contact_heading'] ?? 'Get In Touch') ?></h2>
+        <p class="section-subtitle animate-in"><?= escape($content['contact_subtitle'] ?? 'Ready to start your next project? Contact us today for a consultation.') ?></p>
         <div class="contact-grid">
             <div class="contact-info animate-in-left">
                 <h3>Contact Information</h3>

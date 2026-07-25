@@ -88,9 +88,14 @@ INSERT INTO `site_content` (`page_section`, `content`) VALUES
 ('hero_badge','Brethren Mining Solution Limited'),
 ('cta_1_label','Company Profile'),('cta_1_url','uploads/company-profile.pdf'),
 ('cta_2_label','Explore Services'),('cta_2_url','#services'),
+('commitment_cta_label','Partner With Us'),('commitment_cta_url','#contact'),
+('legal_heading','Legal & Compliance'),('legal_subtitle','We operate with full legal compliance and transparency. Click to view our certifications.'),
+('legal_card_1','Certificate of Incorporation'),('legal_card_2','TRA Registration'),
+('contact_heading','Get In Touch'),('contact_subtitle','Ready to start your next project? Contact us today for a consultation.'),
 ('contact_address','Nyamongo, Tarime, Tanzania'),
 ('contact_phone','+255 762 784 531'),
 ('contact_email1','info@bmsl.co.tz'),
 ('contact_email2','enquiries@bmsl.co.tz'),
 ('contact_website','www.bmsl.co.tz'),
-('footer_tagline','Your trusted partner in mining, industrial, engineering, construction, and HSE solutions across Tanzania.');
+('footer_tagline','Your trusted partner in mining, industrial, engineering, construction, and HSE solutions across Tanzania.'),
+('footer_copyright','© 2026 Brethren Mining Solution Limited. All rights reserved.');

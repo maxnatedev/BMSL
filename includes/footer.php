@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; <?= date('Y') ?> <?= escape(SITE_NAME) ?>. All rights reserved.</p>
+                <p><?= escape($content['footer_copyright'] ?? '© ' . date('Y') . ' ' . SITE_NAME . '. All rights reserved.') ?></p>
             </div>
         </div>
         <button class="back-to-top" id="backToTop" aria-label="Back to top">&#8593;</button>
