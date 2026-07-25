@@ -71,9 +71,8 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
         .form-group select, .form-group input[type=file] { width: 100%; padding: 10px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
         .btn { padding: 10px 24px; background: #F7941D; color: #fff; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .btn:hover { background: #e08515; }
-        .file-input-wrap { display: flex; align-items: center; gap: 10px; }
-        .btn-file { background: #0B1F33; display: inline-block; padding: 10px 24px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: #fff; }
-        .btn-file:hover { background: #1a3a5c; }
+        .file-input-wrap { display: flex; flex-direction: column; gap: 4px; }
+        .form-group input[type=file] { width: auto; padding: 0; border: none; border-radius: 0; font-family: inherit; }
         .file-name { font-size: 0.85rem; color: #6B7280; }
     </style>
 </head>
@@ -115,13 +114,48 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                 </div>
                 <div class="form-group">
                     <label>File (max 250KB, WebP preferred)</label>
-                    <div class="file-input-wrap">
-                        <label class="btn btn-file" style="position:relative;overflow:hidden;cursor:pointer;display:inline-block">
-                            Choose File
-                            <input type="file" name="image" id="image" accept="image/webp,image/jpeg,image/png" required onchange="document.getElementById('fileName').textContent=this.files[0]?this.files[0].name:'No file chosen'" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:100px">
-                        </label>
-                        <span class="file-name" id="fileName">No file chosen</span>
+                    <div class="file-input-wrap" id="fileDebug">
+                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                            <input type="file" name="image" id="image" accept="image/webp,image/jpeg,image/png" required
+                                   style="padding:8px 16px;border:2px dashed #F7941D;border-radius:8px;background:#fff8f0;cursor:pointer;font-family:inherit;font-size:0.85rem;color:#0B1F33;width:200px">
+                            <span class="file-name" id="fileName" style="font-size:0.85rem;color:#6B7280">No file chosen</span>
+                        </div>
+                        <div id="debugLog" style="font-size:0.78rem;color:#6B7280;margin-top:6px;font-family:monospace"></div>
                     </div>
+                    <script>
+                    (function(){
+                        var input = document.getElementById('image');
+                        var log = document.getElementById('debugLog');
+                        var name = document.getElementById('fileName');
+                        function dbg(msg) {
+                            console.log('[FILE-UPLOAD] ' + msg);
+                            if (log) log.textContent = msg;
+                        }
+                        if (input) {
+                            dbg('File input found. Type: ' + input.type + ' Accept: ' + input.accept);
+                            input.addEventListener('click', function(e) {
+                                dbg('INPUT CLICK fired. target: ' + e.target.tagName + '#' + e.target.id);
+                            });
+                            input.addEventListener('change', function() {
+                                var files = this.files;
+                                if (files && files.length > 0) {
+                                    name.textContent = files[0].name;
+                                    dbg('File selected: ' + files[0].name + ' (' + files[0].size + ' bytes, type: ' + files[0].type + ')');
+                                } else {
+                                    name.textContent = 'No file chosen';
+                                    dbg('No file selected');
+                                }
+                            });
+                            input.addEventListener('mouseenter', function() { dbg('Mouse entered file input'); });
+                            input.addEventListener('mouseleave', function() { dbg('Mouse left file input'); });
+                        } else {
+                            dbg('ERROR: File input element not found in DOM!');
+                        }
+                        document.querySelector('.file-input-wrap')?.addEventListener('click', function(e) {
+                            dbg('WRAP CLICK: ' + e.target.tagName + ' class=' + e.target.className);
+                        });
+                    })();
+                    </script>
                 </div>
                 <button type="submit" class="btn">Upload</button>
             </div>
