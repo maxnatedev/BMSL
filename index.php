@@ -140,8 +140,8 @@ require_once __DIR__ . '/includes/header.php';
 
 <section class="section section-alt" id="services">
     <div class="container">
-        <h2 class="section-title animate-in">Our Services</h2>
-        <p class="section-subtitle animate-in">Comprehensive mining, industrial, and HSE solutions tailored to your needs.</p>
+        <h2 class="section-title animate-in"><?= escape($content['services_heading'] ?? 'Our Services') ?></h2>
+        <p class="section-subtitle animate-in"><?= escape($content['services_subtitle'] ?? 'Comprehensive mining, industrial, and HSE solutions tailored to your needs.') ?></p>
         <div class="services-grid">
             <?php for ($i = 1; $i <= 8; $i++):
             $title = $content['service_' . $i . '_title'] ?? '';

@@ -63,6 +63,8 @@ INSERT INTO `site_content` (`page_section`, `content`) VALUES
 ('commitment_text', 'We are committed to the highest standards of safety, quality, and environmental stewardship in every project we undertake. Our team works tirelessly to ensure that every client receives solutions that are not only effective but also sustainable and responsible.'),
 ('values_heading', 'Core Values'),
 ('values_desc', 'The principles that guide every decision and action we take.'),
+('services_heading', 'Our Services'),
+('services_subtitle', 'Comprehensive mining, industrial, and HSE solutions tailored to your needs.'),
 ('values_1', 'Integrity'),('values_2', 'Honesty'),('values_3', 'Ownership'),('values_4', 'Innovation'),('values_5', 'Safety'),('values_6', 'Teamwork'),
 ('why_1_title','Reliable Products'),('why_1_desc','We source and deliver only the highest quality products that meet rigorous industry standards.'),
 ('why_2_title','Professional Expertise'),('why_2_desc','Our team brings decades of combined experience in mining, engineering, and industrial services.'),
