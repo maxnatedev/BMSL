@@ -30,11 +30,25 @@
             </button>
             <nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
                 <ul class="nav-list">
+                    <?php
+                    $navItems = [];
+                    try {
+                        if (!isset($db)) {
+                            require_once __DIR__ . '/database.php';
+                            $db = Database::getInstance();
+                        }
+                        $navItems = $db->fetchAll('SELECT * FROM nav_items WHERE is_active = 1 ORDER BY sort_order');
+                    } catch (\Exception $e) {}
+                    if (empty($navItems)):
+                    ?>
                     <li><a href="#home" class="nav-link">Home</a></li>
                     <li><a href="#about" class="nav-link">About</a></li>
                     <li><a href="#services" class="nav-link">Services</a></li>
                     <li><a href="#team" class="nav-link">Team</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
+                    <?php else: foreach ($navItems as $n): ?>
+                    <li><a href="<?= escape($n['href']) ?>" class="nav-link"><?= escape($n['label']) ?></a></li>
+                    <?php endforeach; endif; ?>
                 </ul>
             </nav>
         </div>

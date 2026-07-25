@@ -13,7 +13,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['section'])) {
     redirect('content.php');
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nav_id'])) {
+    $id = (int)$_POST['nav_id'];
+    $label = trim($_POST['nav_label']);
+    $href = trim($_POST['nav_href']);
+    if ($label && $href) {
+        $db->query('UPDATE nav_items SET label = ?, href = ? WHERE id = ?', [$label, $href, $id]);
+        $_SESSION['flash'] = 'Navigation updated successfully.';
+    }
+    redirect('content.php');
+}
+
 $sections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
+$navItems = $db->fetchAll('SELECT * FROM nav_items ORDER BY sort_order');
 $flash = $_SESSION['flash'] ?? null;
 unset($_SESSION['flash']);
 ?><!DOCTYPE html>
@@ -61,6 +73,26 @@ unset($_SESSION['flash']);
             <a href="dashboard.php">Back to Dashboard</a>
         </div>
         <?php if ($flash): ?><div class="flash"><?= escape($flash) ?></div><?php endif; ?>
+
+        <h2 style="font-size:1.1rem;color:#233d7e;margin:24px 0 12px">Navigation Links</h2>
+        <div class="content-list" style="margin-bottom:30px">
+            <?php foreach ($navItems as $n): ?>
+            <form method="post" class="content-item" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+                <input type="hidden" name="nav_id" value="<?= $n['id'] ?>">
+                <div style="flex:1;min-width:120px">
+                    <label style="display:block;font-size:0.78rem;color:#77797d;margin-bottom:4px">Label</label>
+                    <input type="text" name="nav_label" value="<?= escape($n['label']) ?>" style="width:100%;padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:6px;font-family:inherit;font-size:0.9rem">
+                </div>
+                <div style="flex:1;min-width:120px">
+                    <label style="display:block;font-size:0.78rem;color:#77797d;margin-bottom:4px">URL</label>
+                    <input type="text" name="nav_href" value="<?= escape($n['href']) ?>" style="width:100%;padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:6px;font-family:inherit;font-size:0.9rem">
+                </div>
+                <button type="submit" class="btn" style="margin-top:18px;white-space:nowrap">Save</button>
+            </form>
+            <?php endforeach; ?>
+        </div>
+
+        <h2 style="font-size:1.1rem;color:#233d7e;margin:24px 0 12px">Site Content</h2>
         <div class="content-list">
             <?php foreach ($sections as $s): ?>
             <form method="post" class="content-item">
