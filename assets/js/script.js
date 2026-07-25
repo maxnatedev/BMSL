@@ -19,19 +19,29 @@
     });
   }
 
+  var backdrop = document.getElementById('navBackdrop');
+
+  function closeNav() {
+    hamburger.classList.remove('active');
+    nav.classList.remove('active');
+    if (backdrop) backdrop.classList.remove('active');
+    document.body.classList.remove('nav-open');
+  }
+
   if (hamburger && nav) {
     hamburger.addEventListener('click', function () {
       hamburger.classList.toggle('active');
       nav.classList.toggle('active');
+      if (backdrop) backdrop.classList.toggle('active');
       document.body.classList.toggle('nav-open');
     });
 
+    if (backdrop) {
+      backdrop.addEventListener('click', closeNav);
+    }
+
     Array.prototype.forEach.call(nav.querySelectorAll('.nav-link'), function (link) {
-      link.addEventListener('click', function () {
-        hamburger.classList.remove('active');
-        nav.classList.remove('active');
-        document.body.classList.remove('nav-open');
-      });
+      link.addEventListener('click', closeNav);
     });
   }
 
@@ -56,6 +66,29 @@
   Array.prototype.forEach.call(document.querySelectorAll('.animate-in, .animate-in-left, .animate-in-right, .animate-scale'), function (el) {
     observer.observe(el);
   });
+
+  var navLinks = document.querySelectorAll('.nav-link[data-section]');
+  var sections = [];
+  Array.prototype.forEach.call(navLinks, function (link) {
+    var id = link.getAttribute('data-section');
+    var el = document.getElementById(id);
+    if (el) sections.push({ el: el, link: link });
+  });
+
+  if (sections.length > 0) {
+    var sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          Array.prototype.forEach.call(navLinks, function (l) { l.classList.remove('active'); });
+          Array.prototype.forEach.call(sections, function (s) {
+            if (s.el === entry.target) s.link.classList.add('active');
+          });
+        }
+      });
+    }, { threshold: 0.3, rootMargin: '-60px 0px 0px 0px' });
+
+    Array.prototype.forEach.call(sections, function (s) { sectionObserver.observe(s.el); });
+  }
 
   Array.prototype.forEach.call(document.querySelectorAll('.modal-overlay'), function (overlay) {
     var closeBtn = overlay.querySelector('.modal-close');

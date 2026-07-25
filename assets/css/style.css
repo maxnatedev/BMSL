@@ -53,7 +53,9 @@ ul { list-style: none; }
 .logo img { height: 55px; width: auto; transition: height var(--transition); }
 .header.scrolled .logo img { height: 48px; }
 
-.nav-list { display: flex; gap: 36px; }
+.nav-list { display: flex; gap: 28px; align-items: center; }
+.nav-cta { display: block; margin-left: 8px; }
+.nav-cta .btn { padding: 8px 20px; font-size: 0.82rem; }
 .nav-link {
   color: rgba(255,255,255,0.85); font-weight: 500; font-size: 0.9rem;
   letter-spacing: 0.5px; text-transform: uppercase; position: relative;
@@ -71,6 +73,18 @@ ul { list-style: none; }
 .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
 .hamburger.active span:nth-child(2) { opacity: 0; transform: translateX(-10px); }
 .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+.nav-link.active { color: var(--secondary) !important; }
+.nav-link.active::after { width: 100% !important; }
+
+.nav-cta { display: none; }
+
+.header-social { display: flex; align-items: center; gap: 6px; margin-left: 16px; }
+.header-social-link { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: rgba(255,255,255,0.6); transition: all var(--transition); }
+.header-social-link:hover { color: var(--secondary); background: rgba(255,255,255,0.08); }
+
+.nav-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+.nav-backdrop.active { opacity: 1; visibility: visible; }
 
 .hero {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
@@ -333,11 +347,16 @@ ul { list-style: none; }
     position: fixed; top: 0; right: -100%; width: 300px; height: 100vh;
     background: var(--primary); padding: 100px 36px 36px;
     transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    z-index: 1000;
+    z-index: 1000; display: flex; flex-direction: column;
   }
   .nav.active { right: 0; }
-  .nav-list { flex-direction: column; gap: 24px; }
+  .nav-list { flex-direction: column; gap: 24px; flex: 1; }
   .nav-link { font-size: 1rem; }
+  .nav-cta { display: block; margin-top: 16px; }
+  .nav-cta .btn { width: 100%; justify-content: center; }
+  .header-social { display: none; }
+  .nav.active + .nav-backdrop { opacity: 1; visibility: visible; }
+  .nav.active ~ .header-social { display: none; }
   .section { padding: 70px 0; }
   .hero { background-attachment: scroll; }
   .hero h1 { font-size: 2.2rem; }
