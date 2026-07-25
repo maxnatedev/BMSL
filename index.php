@@ -48,12 +48,12 @@ require_once __DIR__ . '/includes/header.php';
 
 <section class="hero" id="home">
     <div class="hero-content">
-        <span class="hero-badge">Brethren Mining Solution Limited</span>
+        <span class="hero-badge"><?= escape($content['hero_badge'] ?? 'Brethren Mining Solution Limited') ?></span>
         <h1><?= escape($content['hero_heading'] ?? 'Reliable Mining, Industrial & HSE Solutions') ?></h1>
         <p><?= escape($content['hero_subtext'] ?? 'Your trusted partner in mining, industrial engineering, construction, and health, safety and environmental solutions across Tanzania.') ?></p>
         <div class="hero-buttons">
-            <a href="#contact" class="btn btn-primary">Get Quote</a>
-            <a href="#services" class="btn btn-outline">Explore Services</a>
+            <a href="<?= escape($content['cta_1_url'] ?? '#') ?>" class="btn btn-primary"><?= escape($content['cta_1_label'] ?? 'Company Profile') ?></a>
+            <a href="<?= escape($content['cta_2_url'] ?? '#services') ?>" class="btn btn-outline"><?= escape($content['cta_2_label'] ?? 'Explore Services') ?></a>
         </div>
     </div>
     <div class="scroll-indicator" aria-hidden="true"></div>
