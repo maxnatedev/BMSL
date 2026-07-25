@@ -2,4 +2,7 @@
 .playwright-mcp/
 test_*
 reference-*.png
+bmsl-*.png
+admin-*.png
+team-*.png
 .gstack/
