@@ -3,7 +3,7 @@
         <div class="footer-inner container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <img src="assets/images/logo.svg" alt="<?= escape(SITE_NAME) ?>" width="160" height="36" class="footer-logo">
+                    <img src="assets/images/logo-white.png" alt="<?= escape(SITE_NAME) ?>" width="200" height="50" class="footer-logo">
                     <p class="footer-desc">Your trusted partner in mining, industrial, engineering, construction, and HSE solutions across Tanzania.</p>
                 </div>
                 <div class="footer-col">

@@ -47,14 +47,15 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', system-ui, sans-serif; background: #f0f2f5; display: flex; }
-        .sidebar { width: 240px; background: #0B1F33; min-height: 100vh; padding: 24px 0; }
-        .sidebar h2 { color: #fff; font-size: 1rem; padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 16px; }
+        .sidebar { width: 240px; background: #233d7e; min-height: 100vh; padding: 24px 0; display: flex; flex-direction: column; }
+        .sidebar .sidebar-logo { padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 16px; }
+        .sidebar .sidebar-logo img { max-width: 180px; height: auto; }
         .sidebar a { display: block; padding: 12px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; }
         .sidebar a:hover, .sidebar a.active { background: rgba(255,255,255,0.06); color: #F7941D; }
         .main { flex: 1; padding: 30px; }
         .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .header-bar h1 { font-size: 1.5rem; color: #0B1F33; }
-        .header-bar a { color: #6B7280; text-decoration: none; font-size: 0.9rem; }
+        .header-bar h1 { font-size: 1.5rem; color: #233d7e; }
+        .header-bar a { color: #77797d; text-decoration: none; font-size: 0.9rem; }
         .msg { padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; }
         .msg-success { background: #d4edda; color: #155724; }
         .msg-error { background: #fef2f2; color: #dc3545; }
@@ -62,23 +63,25 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
         .image-card { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
         .image-card img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
         .image-card .name { font-size: 0.82rem; color: #2E2E2E; word-break: break-all; }
-        .image-card .size { font-size: 0.78rem; color: #6B7280; }
+        .image-card .size { font-size: 0.78rem; color: #77797d; }
         .upload-form { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin-bottom: 30px; }
-        .upload-form h3 { font-size: 1rem; color: #0B1F33; margin-bottom: 16px; }
+        .upload-form h3 { font-size: 1rem; color: #233d7e; margin-bottom: 16px; }
         .form-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
         .form-group { flex: 1; min-width: 200px; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: 500; color: #0B1F33; margin-bottom: 6px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 500; color: #233d7e; margin-bottom: 6px; }
         .form-group select, .form-group input[type=file] { width: 100%; padding: 10px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
         .btn { padding: 10px 24px; background: #F7941D; color: #fff; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .btn:hover { background: #e08515; }
         .file-input-wrap { display: flex; flex-direction: column; gap: 4px; }
         .form-group input[type=file] { box-sizing: border-box; overflow: visible; width: auto !important; padding: 0 !important; border: none !important; }
-        .file-name { font-size: 0.85rem; color: #6B7280; }
+        .btn-file { background: #233d7e; display: inline-block; padding: 10px 24px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: #fff; }
+        .btn-file:hover { background: #1a2f61; }
+        .file-name { font-size: 0.85rem; color: #77797d; }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <h2><?= escape(SITE_NAME) ?></h2>
+        <div class="sidebar-logo"><img src="../assets/images/logo-white.png" alt="<?= escape(SITE_NAME) ?>"></div>
         <a href="dashboard.php">Dashboard</a>
         <a href="content.php">Site Content</a>
         <a href="images.php" class="active">Images</a>

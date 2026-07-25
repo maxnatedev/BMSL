@@ -26,18 +26,19 @@ unset($_SESSION['flash']);
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', system-ui, sans-serif; background: #f0f2f5; display: flex; }
-        .sidebar { width: 240px; background: #0B1F33; min-height: 100vh; padding: 24px 0; }
-        .sidebar h2 { color: #fff; font-size: 1rem; padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 16px; }
+        .sidebar { width: 240px; background: #233d7e; min-height: 100vh; padding: 24px 0; display: flex; flex-direction: column; }
+        .sidebar .sidebar-logo { padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 16px; }
+        .sidebar .sidebar-logo img { max-width: 180px; height: auto; }
         .sidebar a { display: block; padding: 12px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; }
         .sidebar a:hover, .sidebar a.active { background: rgba(255,255,255,0.06); color: #F7941D; }
         .main { flex: 1; padding: 30px; }
         .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .header-bar h1 { font-size: 1.5rem; color: #0B1F33; }
-        .header-bar a { color: #6B7280; text-decoration: none; font-size: 0.9rem; }
+        .header-bar h1 { font-size: 1.5rem; color: #233d7e; }
+        .header-bar a { color: #77797d; text-decoration: none; font-size: 0.9rem; }
         .flash { background: #d4edda; color: #155724; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; }
         .content-list { display: grid; gap: 16px; }
         .content-item { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
-        .content-item h3 { font-size: 0.9rem; color: #0B1F33; margin-bottom: 12px; text-transform: capitalize; }
+        .content-item h3 { font-size: 0.9rem; color: #233d7e; margin-bottom: 12px; text-transform: capitalize; }
         .content-item textarea { width: 100%; min-height: 80px; padding: 12px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-family: inherit; font-size: 0.9rem; resize: vertical; }
         .content-item textarea:focus { outline: none; border-color: #F7941D; }
         .content-item .btn { margin-top: 10px; padding: 10px 24px; background: #F7941D; color: #fff; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
@@ -47,7 +48,7 @@ unset($_SESSION['flash']);
 </head>
 <body>
     <div class="sidebar">
-        <h2><?= escape(SITE_NAME) ?></h2>
+        <div class="sidebar-logo"><img src="../assets/images/logo-white.png" alt="<?= escape(SITE_NAME) ?>"></div>
         <a href="dashboard.php">Dashboard</a>
         <a href="content.php" class="active">Site Content</a>
         <a href="images.php">Images</a>

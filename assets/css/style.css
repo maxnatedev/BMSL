@@ -1,11 +1,11 @@
 :root {
-  --primary: #0B1F33;
+  --primary: #233d7e;
   --secondary: #F7941D;
   --accent: #FFC107;
   --bg: #FFFFFF;
   --section-bg: #F8F9FA;
   --text: #2E2E2E;
-  --muted: #6B7280;
+  --muted: #77797d;
   --radius: 12px;
   --radius-sm: 8px;
   --shadow: 0 4px 24px rgba(0,0,0,0.07);
@@ -50,8 +50,8 @@ ul { list-style: none; }
   -webkit-backdrop-filter: blur(12px);
 }
 .header-inner { display: flex; align-items: center; justify-content: space-between; }
-.logo img { height: 42px; width: auto; transition: height var(--transition); }
-.header.scrolled .logo img { height: 36px; }
+.logo img { height: 55px; width: auto; transition: height var(--transition); }
+.header.scrolled .logo img { height: 48px; }
 
 .nav-list { display: flex; gap: 36px; }
 .nav-link {

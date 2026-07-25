@@ -16,12 +16,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/images/favicon-96x96.png">
 </head>
 <body>
     <header class="header" id="header">
         <div class="header-inner container">
             <a href="#" class="logo">
-                <img src="assets/images/logo.svg" alt="<?= escape(SITE_NAME) ?>" width="180" height="40">
+                <img src="assets/images/logo-white.png" alt="<?= escape(SITE_NAME) ?>" width="220" height="55">
             </a>
             <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
                 <span></span><span></span><span></span>
