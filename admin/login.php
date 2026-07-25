@@ -43,7 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         body { font-family: 'Inter', system-ui, sans-serif; background: #f0f2f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
         .login-card { background: #fff; border-radius: 12px; padding: 40px; width: 100%; max-width: 400px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); text-align: center; }
         .login-card .admin-logo { max-width: 240px; height: auto; margin-bottom: 1.5rem; }
-        .login-card h1 { font-size: 1.5rem; color: #233d7e; text-align: center; margin-bottom: 2rem; }
+        .login-card h1 { font-size: 1.5rem; color: #77797d; text-align: center; margin-bottom: 2rem; }
+        .pw-wrap { position: relative; }
+        .pw-wrap input { padding-right: 48px !important; }
+        .pw-toggle { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 4px; font-size: 1.1rem; color: #77797d; line-height: 1; }
         .form-group { margin-bottom: 1.25rem; text-align: left; }
         .form-group label { display: block; font-size: 0.85rem; font-weight: 500; color: #233d7e; margin-bottom: 6px; }
         .form-group input { width: 100%; padding: 12px 16px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-family: inherit; font-size: 0.95rem; transition: border-color 0.2s; }
@@ -68,7 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+                <div class="pw-wrap">
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+                    <button type="button" class="pw-toggle" id="pwToggle" onclick="var p=document.getElementById('password');var t=this;if(p.type==='password'){p.type='text';t.textContent='Hide'}else{p.type='password';t.textContent='Show'}" tabindex="-1">Show</button>
+                </div>
             </div>
             <button type="submit" class="btn">Log In</button>
         </form>
