@@ -86,18 +86,18 @@ require_once __DIR__ . '/includes/header.php';
         <div class="vmv-grid">
             <div class="vmv-card animate-scale">
                 <div class="vmv-icon vision"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="2"/><path d="M2 16s6-10 14-10 14 10 14 10-6 10-14 10S2 16 2 16z"/></svg></div>
-                <h3>Our Vision</h3>
+                <h3><?= escape($content['vision_heading'] ?? 'Our Vision') ?></h3>
                 <p><?= escape($content['vision_text'] ?? 'To be the leading provider of integrated mining and industrial solutions in Tanzania.') ?></p>
             </div>
             <div class="vmv-card animate-scale">
                 <div class="vmv-icon mission"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="4"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="16" y1="26" x2="16" y2="30"/><line x1="2" y1="16" x2="6" y2="16"/><line x1="26" y1="16" x2="30" y2="16"/></svg></div>
-                <h3>Our Mission</h3>
+                <h3><?= escape($content['mission_heading'] ?? 'Our Mission') ?></h3>
                 <p><?= escape($content['mission_text'] ?? 'To deliver exceptional value to our clients through innovative solutions.') ?></p>
             </div>
             <div class="vmv-card animate-scale">
                 <div class="vmv-icon values"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="16,2 20,11 30,12 22,19 24,29 16,24 8,29 10,19 2,12 12,11"/></svg></div>
-                <h3>Core Values</h3>
-                <p>The principles that guide every decision and action we take.</p>
+                <h3><?= escape($content['values_heading'] ?? 'Core Values') ?></h3>
+                <p><?= escape($content['values_desc'] ?? 'The principles that guide every decision and action we take.') ?></p>
                 <div class="values-list">
                     <?php for ($i = 1; $i <= 6; $i++): ?>
                     <span><?= escape($content['values_' . $i] ?? '') ?></span>
