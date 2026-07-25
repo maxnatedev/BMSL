@@ -72,7 +72,7 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
         .btn { padding: 10px 24px; background: #F7941D; color: #fff; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .btn:hover { background: #e08515; }
         .file-input-wrap { display: flex; flex-direction: column; gap: 4px; }
-        .form-group input[type=file] { width: auto; padding: 0; border: none; border-radius: 0; font-family: inherit; }
+        .form-group input[type=file] { box-sizing: border-box; overflow: visible; width: auto !important; padding: 0 !important; border: none !important; }
         .file-name { font-size: 0.85rem; color: #6B7280; }
     </style>
 </head>
@@ -114,45 +114,22 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                 </div>
                 <div class="form-group">
                     <label>File (max 250KB, WebP preferred)</label>
-                    <div class="file-input-wrap" id="fileDebug">
-                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-                            <input type="file" name="image" id="image" accept="image/webp,image/jpeg,image/png" required
-                                   style="padding:8px 16px;border:2px dashed #F7941D;border-radius:8px;background:#fff8f0;cursor:pointer;font-family:inherit;font-size:0.85rem;color:#0B1F33;width:200px">
-                            <span class="file-name" id="fileName" style="font-size:0.85rem;color:#6B7280">No file chosen</span>
-                        </div>
-                        <div id="debugLog" style="font-size:0.78rem;color:#6B7280;margin-top:6px;font-family:monospace"></div>
+                    <div>
+                        <input type="file" name="image" id="image" accept="image/webp,image/jpeg,image/png" required>
+                        <span id="fileName" style="margin-left:8px;font-size:0.85rem;color:#6B7280"></span>
                     </div>
+                    <div id="debugLog" style="margin-top:4px;font-size:0.78rem;color:#6B7280;font-family:monospace"></div>
                     <script>
                     (function(){
                         var input = document.getElementById('image');
                         var log = document.getElementById('debugLog');
                         var name = document.getElementById('fileName');
-                        function dbg(msg) {
-                            console.log('[FILE-UPLOAD] ' + msg);
-                            if (log) log.textContent = msg;
-                        }
-                        if (input) {
-                            dbg('File input found. Type: ' + input.type + ' Accept: ' + input.accept);
-                            input.addEventListener('click', function(e) {
-                                dbg('INPUT CLICK fired. target: ' + e.target.tagName + '#' + e.target.id);
-                            });
-                            input.addEventListener('change', function() {
-                                var files = this.files;
-                                if (files && files.length > 0) {
-                                    name.textContent = files[0].name;
-                                    dbg('File selected: ' + files[0].name + ' (' + files[0].size + ' bytes, type: ' + files[0].type + ')');
-                                } else {
-                                    name.textContent = 'No file chosen';
-                                    dbg('No file selected');
-                                }
-                            });
-                            input.addEventListener('mouseenter', function() { dbg('Mouse entered file input'); });
-                            input.addEventListener('mouseleave', function() { dbg('Mouse left file input'); });
-                        } else {
-                            dbg('ERROR: File input element not found in DOM!');
-                        }
-                        document.querySelector('.file-input-wrap')?.addEventListener('click', function(e) {
-                            dbg('WRAP CLICK: ' + e.target.tagName + ' class=' + e.target.className);
+                        function dbg(m){ console.log('[FILE-UPLOAD] '+m); if(log) log.textContent=m; }
+                        if(!input){ dbg('ERROR: input not found'); return; }
+                        dbg('Input exists. noCustomStyle=true');
+                        input.addEventListener('change', function(){
+                            var f = this.files;
+                            if(f && f.length>0){ name.textContent = f[0].name; dbg('SELECTED: '+f[0].name); }
                         });
                     })();
                     </script>
