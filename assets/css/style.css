@@ -53,9 +53,10 @@ ul { list-style: none; }
 .logo img { height: 55px; width: auto; transition: height var(--transition); }
 .header.scrolled .logo img { height: 48px; }
 
+.nav { display: flex; align-items: center; gap: 8px; }
 .nav-list { display: flex; gap: 28px; align-items: center; }
-.nav-cta { display: block; margin-left: 8px; }
-.nav-cta .btn { padding: 8px 20px; font-size: 0.82rem; }
+.nav-cta { display: block; }
+.nav-cta .btn { padding: 8px 20px; font-size: 0.82rem; white-space: nowrap; }
 .nav-link {
   color: rgba(255,255,255,0.85); font-weight: 500; font-size: 0.9rem;
   letter-spacing: 0.5px; text-transform: uppercase; position: relative;
@@ -347,12 +348,12 @@ ul { list-style: none; }
     position: fixed; top: 0; right: -100%; width: 300px; height: 100vh;
     background: var(--primary); padding: 100px 36px 36px;
     transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    z-index: 1000; display: flex; flex-direction: column;
+    z-index: 1000; flex-direction: column; align-items: stretch;
   }
   .nav.active { right: 0; }
   .nav-list { flex-direction: column; gap: 24px; flex: 1; }
   .nav-link { font-size: 1rem; }
-  .nav-cta { display: block; margin-top: 16px; }
+  .nav-cta { margin-top: 16px; }
   .nav-cta .btn { width: 100%; justify-content: center; }
   .header-social { display: none; }
   .nav.active + .nav-backdrop { opacity: 1; visibility: visible; }
