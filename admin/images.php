@@ -105,14 +105,32 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                     <label for="target">Image to replace</label>
                     <select name="target" id="target" required>
                         <option value="">Select image...</option>
+                        <optgroup label="Site">
                         <option value="hero.webp">Hero Background</option>
                         <option value="about.webp">About Section</option>
-                        <option value="logo.svg">Logo</option>
+                        <option value="logo-white.png">Header Logo</option>
+                        <option value="logo-blue.png">Admin Logo (light bg)</option>
+                        <option value="logo-original.png">Admin Logo (original)</option>
+                        </optgroup>
+                        <optgroup label="Services">
+                        <option value="service-ppe.webp">PPE Supply</option>
+                        <option value="service-maintenance.webp">Maintenance</option>
+                        <option value="service-construction.webp">Construction</option>
+                        <option value="service-fabrication.webp">Fabrication</option>
+                        <option value="service-electrical.webp">Electrical Installation</option>
+                        <option value="service-branding.webp">Branding</option>
+                        <option value="service-hse.webp">HSE Consultancy</option>
+                        <option value="service-mining.webp">Mining Support</option>
+                        </optgroup>
+                        <optgroup label="Team">
                         <option value="team-1.webp">Team Member 1</option>
                         <option value="team-2.webp">Team Member 2</option>
                         <option value="team-3.webp">Team Member 3</option>
+                        </optgroup>
+                        <optgroup label="Legal">
                         <option value="certificate.webp">Certificate of Incorporation</option>
                         <option value="tra-registration.webp">TRA Registration</option>
+                        </optgroup>
                     </select>
                 </div>
                 <div class="form-group">

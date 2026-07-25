@@ -4,7 +4,7 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <img src="assets/images/logo-white.png" alt="<?= escape(SITE_NAME) ?>" width="200" height="50" class="footer-logo">
-                    <p class="footer-desc">Your trusted partner in mining, industrial, engineering, construction, and HSE solutions across Tanzania.</p>
+                    <p class="footer-desc"><?= escape($content['footer_tagline'] ?? 'Your trusted partner in mining, industrial, engineering, construction, and HSE solutions across Tanzania.') ?></p>
                 </div>
                 <div class="footer-col">
                     <h4 class="footer-heading">Quick Links</h4>
