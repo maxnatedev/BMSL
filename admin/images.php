@@ -72,9 +72,7 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
         .btn { padding: 10px 24px; background: #F7941D; color: #fff; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .btn:hover { background: #e08515; }
         .file-input-wrap { display: flex; align-items: center; gap: 10px; }
-        .btn-file-wrap { position: relative; overflow: hidden; display: inline-block; }
-        .btn-file-wrap input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-        .btn-file { background: #0B1F33; display: inline-block; }
+        .btn-file { background: #0B1F33; display: inline-block; padding: 10px 24px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: #fff; }
         .btn-file:hover { background: #1a3a5c; }
         .file-name { font-size: 0.85rem; color: #6B7280; }
     </style>
@@ -118,10 +116,10 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                 <div class="form-group">
                     <label>File (max 250KB, WebP preferred)</label>
                     <div class="file-input-wrap">
-                        <span class="btn-file-wrap">
-                            <input type="file" name="image" id="image" accept="image/webp,image/jpeg,image/png" required onchange="document.getElementById('fileName').textContent=this.files[0]?this.files[0].name:'No file chosen'">
-                            <span class="btn btn-file">Choose File</span>
-                        </span>
+                        <label class="btn btn-file" style="position:relative;overflow:hidden;cursor:pointer;display:inline-block">
+                            Choose File
+                            <input type="file" name="image" id="image" accept="image/webp,image/jpeg,image/png" required onchange="document.getElementById('fileName').textContent=this.files[0]?this.files[0].name:'No file chosen'" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:100px">
+                        </label>
                         <span class="file-name" id="fileName">No file chosen</span>
                     </div>
                 </div>
