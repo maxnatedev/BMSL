@@ -78,8 +78,6 @@ ul { list-style: none; }
 .nav-link.active { color: var(--secondary) !important; }
 .nav-link.active::after { width: 100% !important; }
 
-.nav-cta { display: none; }
-
 .header-social { display: flex; align-items: center; gap: 6px; margin-left: 16px; }
 .header-social-link { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: rgba(255,255,255,0.6); transition: all var(--transition); }
 .header-social-link:hover { color: var(--secondary); background: rgba(255,255,255,0.08); }
