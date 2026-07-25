@@ -68,11 +68,11 @@ require_once __DIR__ . '/includes/header.php';
             <div class="about-content animate-in-right">
                 <h2><?= escape($content['about_heading'] ?? 'About Brethren Mining Solution Limited') ?></h2>
                 <p><?= escape($content['about_text'] ?? 'Brethren Mining Solution Limited is a proudly Tanzanian company dedicated to providing professional mining, industrial, engineering, construction, and HSE solutions.') ?></p>
-                <p>With a deep understanding of the local landscape and a commitment to international standards, we deliver solutions that drive productivity, ensure safety, and create lasting value for our clients across Tanzania and beyond.</p>
+                <p><?= escape($content['about_paragraph_2'] ?? 'With a deep understanding of the local landscape and a commitment to international standards, we deliver solutions that drive productivity, ensure safety, and create lasting value.') ?></p>
                 <div class="about-stats">
-                    <div class="about-stat"><div class="about-stat-number">50+</div><div class="about-stat-label">Projects Completed</div></div>
-                    <div class="about-stat"><div class="about-stat-number">8</div><div class="about-stat-label">Service Lines</div></div>
-                    <div class="about-stat"><div class="about-stat-number">100%</div><div class="about-stat-label">Client Commitment</div></div>
+                    <?php for ($i = 1; $i <= 3; $i++): ?>
+                    <div class="about-stat"><div class="about-stat-number"><?= escape($content['about_stat_' . $i . '_value'] ?? '') ?></div><div class="about-stat-label"><?= escape($content['about_stat_' . $i . '_label'] ?? '') ?></div></div>
+                    <?php endfor; ?>
                 </div>
             </div>
         </div>
