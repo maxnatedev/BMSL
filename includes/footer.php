@@ -46,6 +46,6 @@
         </div>
         <button class="back-to-top" id="backToTop" aria-label="Back to top">&#8593;</button>
     </footer>
-    <script src="assets/js/script.js" defer></script>
+    <script src="assets/js/script.js?v=<?= filemtime(__DIR__ . '/../assets/js/script.js') ?>" defer></script>
 </body>
 </html>
