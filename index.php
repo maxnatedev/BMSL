@@ -89,17 +89,17 @@ require_once __DIR__ . '/includes/header.php';
         <p class="section-subtitle animate-in">Guided by a clear purpose and strong principles that define who we are and how we operate.</p>
         <div class="vmv-grid">
             <div class="vmv-card animate-scale">
-                <div class="vmv-icon vision">&#9672;</div>
+                <div class="vmv-icon vision"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="2"/><path d="M2 16s6-10 14-10 14 10 14 10-6 10-14 10S2 16 2 16z"/></svg></div>
                 <h3>Our Vision</h3>
                 <p>To be the leading provider of integrated mining and industrial solutions in Tanzania, setting the standard for quality, safety, and reliability.</p>
             </div>
             <div class="vmv-card animate-scale">
-                <div class="vmv-icon mission">&#9651;</div>
+                <div class="vmv-icon mission"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="4"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="16" y1="26" x2="16" y2="30"/><line x1="2" y1="16" x2="6" y2="16"/><line x1="26" y1="16" x2="30" y2="16"/></svg></div>
                 <h3>Our Mission</h3>
                 <p>To deliver exceptional value to our clients through innovative solutions, unwavering commitment to safety, and a team of dedicated professionals.</p>
             </div>
             <div class="vmv-card animate-scale">
-                <div class="vmv-icon values">&#9670;</div>
+                <div class="vmv-icon values"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="16,2 20,11 30,12 22,19 24,29 16,24 8,29 10,19 2,12 12,11"/></svg></div>
                 <h3>Core Values</h3>
                 <p>The principles that guide every decision and action we take.</p>
                 <div class="values-list">
@@ -120,12 +120,12 @@ require_once __DIR__ . '/includes/header.php';
         <h2 class="section-title animate-in">Why Choose Us</h2>
         <p class="section-subtitle animate-in">What sets us apart in the mining and industrial solutions landscape.</p>
         <div class="why-grid">
-            <div class="why-card animate-scale"><div class="why-icon">&#9670;</div><h3>Reliable Products</h3><p>We source and deliver only the highest quality products that meet rigorous industry standards.</p></div>
-            <div class="why-card animate-scale"><div class="why-icon">&#9672;</div><h3>Professional Expertise</h3><p>Our team brings decades of combined experience in mining, engineering, and industrial services.</p></div>
-            <div class="why-card animate-scale"><div class="why-icon">&#9651;</div><h3>Customer Focus</h3><p>Every solution is tailored to meet the unique needs and challenges of each client.</p></div>
-            <div class="why-card animate-scale"><div class="why-icon">&#9679;</div><h3>Quality</h3><p>We maintain strict quality control processes across all our service deliveries and products.</p></div>
-            <div class="why-card animate-scale"><div class="why-icon">&#9632;</div><h3>Timely Delivery</h3><p>We understand the value of time and consistently deliver projects on schedule.</p></div>
-            <div class="why-card animate-scale"><div class="why-icon">&#9673;</div><h3>Long-Term Partnerships</h3><p>We build lasting relationships based on trust, transparency, and mutual growth.</p></div>
+            <div class="why-card animate-scale"><div class="why-icon"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2h16l3 10-11 18-11-18 3-10z"/><polyline points="10,10 16,16 22,10"/></svg></div><h3>Reliable Products</h3><p>We source and deliver only the highest quality products that meet rigorous industry standards.</p></div>
+            <div class="why-card animate-scale"><div class="why-icon"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="16,2 20,11 30,12 22,19 24,29 16,24 8,29 10,19 2,12 12,11"/></svg></div><h3>Professional Expertise</h3><p>Our team brings decades of combined experience in mining, engineering, and industrial services.</p></div>
+            <div class="why-card animate-scale"><div class="why-icon"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="16" cy="10" r="6"/><path d="M4 30c0-8 4-12 12-12s12 4 12 12"/></svg></div><h3>Customer Focus</h3><p>Every solution is tailored to meet the unique needs and challenges of each client.</p></div>
+            <div class="why-card animate-scale"><div class="why-icon"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="16,2 18,10 26,10 20,16 22,24 16,19 10,24 12,16 6,10 14,10"/></svg></div><h3>Quality</h3><p>We maintain strict quality control processes across all our service deliveries and products.</p></div>
+            <div class="why-card animate-scale"><div class="why-icon"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="16" cy="16" r="12"/><polyline points="16,8 16,16 22,20"/></svg></div><h3>Timely Delivery</h3><p>We understand the value of time and consistently deliver projects on schedule.</p></div>
+            <div class="why-card animate-scale"><div class="why-icon"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 22c-2-2-2-6 0-8l4-4c2-2 6-2 8 0s2 6 0 8l-2 2"/><path d="M22 10c2 2 2 6 0 8l-4 4c-2 2-6 2-8 0s-2-6 0-8l2-2"/></svg></div><h3>Long-Term Partnerships</h3><p>We build lasting relationships based on trust, transparency, and mutual growth.</p></div>
         </div>
     </div>
 </section>
