@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= escape(SITE_NAME) ?> | Reliable Mining, Industrial & HSE Solutions</title>
-    <meta name="description" content="Brethren Mining Solution Limited – Your trusted partner in mining, industrial engineering, construction, and HSE solutions across Tanzania.">
+    <title><?= escape(SITE_NAME) ?> | <?= escape($content['page_title'] ?? 'Reliable Mining, Industrial & HSE Solutions') ?></title>
+    <meta name="description" content="<?= escape($content['meta_description'] ?? SITE_NAME . ' – Your trusted partner in mining, industrial engineering, construction, and HSE solutions across Tanzania.') ?>">
     <meta property="og:title" content="<?= escape(SITE_NAME) ?>">
-    <meta property="og:description" content="Reliable mining, industrial & HSE solutions in Tanzania.">
+    <meta property="og:description" content="<?= escape($content['og_description'] ?? 'Reliable mining, industrial & HSE solutions in Tanzania.') ?>">
     <meta property="og:url" content="<?= escape(SITE_URL) ?>">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
@@ -51,7 +51,7 @@
                     <?php endforeach; endif; ?>
                 </ul>
                 <div class="nav-cta">
-                    <a href="#contact" class="btn btn-primary btn-sm">Get Quote</a>
+                    <a href="<?= escape($content['nav_cta_url'] ?? '#contact') ?>" class="btn btn-primary btn-sm"><?= escape($content['nav_cta_label'] ?? 'Get Quote') ?></a>
                 </div>
             </nav>
             <div class="header-social">

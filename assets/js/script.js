@@ -163,8 +163,9 @@
       var formData = new FormData(form);
       if (csrfInput) formData.set('csrf_token', csrfInput.value);
 
+      var bf = window.BMSL_FORM || {};
       var submitBtn = form.querySelector('button[type="submit"]');
-      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending...'; }
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = bf.sendingText || 'Sending...'; }
 
       fetch(window.location.href + '?action=contact', { method: 'POST', body: formData })
         .then(function (res) { return res.json(); })
@@ -172,7 +173,7 @@
           if (data.success) {
             if (formSuccess) {
               formSuccess.style.display = 'block';
-              formSuccess.textContent = 'Thank you! Your message has been sent successfully. We will get back to you shortly.';
+              formSuccess.textContent = bf.successText || 'Thank you! Your message has been sent successfully.';
             }
             form.reset();
             Object.keys(fields).forEach(function (key) {
@@ -180,12 +181,12 @@
               if (f.input) f.input.style.borderColor = '#e5e7eb';
             });
           } else {
-            alert(data.message || 'Something went wrong. Please try again.');
+            alert(data.message || bf.genericError || 'Something went wrong. Please try again.');
           }
         })
-        .catch(function () { alert('Network error. Please try again.'); })
+        .catch(function () { alert(bf.networkError || 'Network error. Please try again.'); })
         .finally(function () {
-          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send Message'; }
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = bf.submitText || 'Send Message'; }
         });
     });
   }

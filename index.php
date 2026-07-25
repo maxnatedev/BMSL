@@ -12,9 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
         $phone = trim($_POST['phone'] ?? '');
         $company = trim($_POST['company'] ?? '');
         $message = trim($_POST['message'] ?? '');
-        if (strlen($name) < 2) throw new \Exception('Name is required.');
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) throw new \Exception('Valid email is required.');
-        if (strlen($message) < 10) throw new \Exception('Message must be at least 10 characters.');
+        if (strlen($name) < 2) throw new \Exception($content['form_error_name'] ?? 'Please enter your name.');
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) throw new \Exception($content['form_error_email'] ?? 'Please enter a valid email.');
+        if (strlen($message) < 10) throw new \Exception($content['form_error_message'] ?? 'Please enter at least 10 characters.');
         $rate_key = 'contact_' . $_SERVER['REMOTE_ADDR'];
         $attempts = $_SESSION[$rate_key] ?? 0;
         if ($attempts >= 3) throw new \Exception('Too many attempts. Please try later.');
@@ -63,7 +63,7 @@ require_once __DIR__ . '/includes/header.php';
     <div class="container">
         <div class="about-grid">
             <div class="about-image animate-in-left">
-                <img src="assets/images/about.webp" alt="About BMSL" loading="lazy">
+                <img src="assets/images/about.webp" alt="<?= escape($content['about_img_alt'] ?? 'About BMSL') ?>" loading="lazy">
             </div>
             <div class="about-content animate-in-right">
                 <h2><?= escape($content['about_heading'] ?? 'About Brethren Mining Solution Limited') ?></h2>
@@ -81,8 +81,8 @@ require_once __DIR__ . '/includes/header.php';
 
 <section class="section section-alt" id="vision">
     <div class="container">
-        <h2 class="section-title animate-in">Our Vision, Mission & Values</h2>
-        <p class="section-subtitle animate-in">Guided by a clear purpose and strong principles that define who we are and how we operate.</p>
+        <h2 class="section-title animate-in"><?= escape($content['vmv_heading'] ?? 'Our Vision, Mission & Values') ?></h2>
+        <p class="section-subtitle animate-in"><?= escape($content['vmv_subtitle'] ?? 'Guided by a clear purpose and strong principles that define who we are and how we operate.') ?></p>
         <div class="vmv-grid">
             <div class="vmv-card animate-scale">
                 <div class="vmv-icon vision"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="2"/><path d="M2 16s6-10 14-10 14 10 14 10-6 10-14 10S2 16 2 16z"/></svg></div>
@@ -110,8 +110,8 @@ require_once __DIR__ . '/includes/header.php';
 
 <section class="section" id="why-us">
     <div class="container">
-        <h2 class="section-title animate-in">Why Choose Us</h2>
-        <p class="section-subtitle animate-in">What sets us apart in the mining and industrial solutions landscape.</p>
+        <h2 class="section-title animate-in"><?= escape($content['why_heading'] ?? 'Why Choose Us') ?></h2>
+        <p class="section-subtitle animate-in"><?= escape($content['why_subtitle'] ?? 'What sets us apart in the mining and industrial solutions landscape.') ?></p>
         <div class="why-grid">
             <?php
             $whyIcons = ['shield','star','person','award','clock','link'];
@@ -154,7 +154,7 @@ require_once __DIR__ . '/includes/header.php';
                 <div class="service-body">
                     <h3><?= escape($title) ?></h3>
                     <p><?= escape($desc) ?></p>
-                    <button class="btn btn-primary btn-sm" data-modal="modal-<?= $modalKey[$i-1] ?>">Read More</button>
+                    <button class="btn btn-primary btn-sm" data-modal="modal-<?= $modalKey[$i-1] ?>"><?= escape($content['read_more_text'] ?? 'Read More') ?></button>
                 </div>
             </div>
             <?php endfor; ?>
@@ -222,8 +222,8 @@ if (!$modal) continue;
     </div>
 </section>
 
-<div class="modal-overlay" id="modal-cert"><div class="modal-content"><button class="modal-close" aria-label="Close">&times;</button><h2>Certificate of Incorporation</h2><img src="assets/images/certificate.webp" alt="Certificate of Incorporation" loading="lazy"></div></div>
-<div class="modal-overlay" id="modal-tra"><div class="modal-content"><button class="modal-close" aria-label="Close">&times;</button><h2>TRA Registration</h2><img src="assets/images/tra-registration.webp" alt="TRA Registration" loading="lazy"></div></div>
+<div class="modal-overlay" id="modal-cert"><div class="modal-content"><button class="modal-close" aria-label="Close">&times;</button><h2><?= escape($content['legal_card_1'] ?? 'Certificate of Incorporation') ?></h2><img src="assets/images/certificate.webp" alt="<?= escape($content['legal_cert_alt'] ?? 'Certificate of Incorporation') ?>" loading="lazy"></div></div>
+<div class="modal-overlay" id="modal-tra"><div class="modal-content"><button class="modal-close" aria-label="Close">&times;</button><h2><?= escape($content['legal_card_2'] ?? 'TRA Registration') ?></h2><img src="assets/images/tra-registration.webp" alt="<?= escape($content['legal_tra_alt'] ?? 'TRA Registration') ?>" loading="lazy"></div></div>
 
 <section class="section" id="contact">
     <div class="container">
@@ -231,7 +231,7 @@ if (!$modal) continue;
         <p class="section-subtitle animate-in"><?= escape($content['contact_subtitle'] ?? 'Ready to start your next project? Contact us today for a consultation.') ?></p>
         <div class="contact-grid">
             <div class="contact-info animate-in-left">
-                <h3>Contact Information</h3>
+                <h3><?= escape($content['contact_info_heading'] ?? 'Contact Information') ?></h3>
                 <div class="contact-detail"><span class="contact-detail-icon">&#9906;</span><div><h4>Address</h4><p><?= escape($content['contact_address'] ?? 'Nyamongo, Tarime, Tanzania') ?></p></div></div>
                 <div class="contact-detail"><span class="contact-detail-icon">&#9742;</span><div><h4>Phone</h4><p><a href="tel:<?= escape($content['contact_phone'] ?? '') ?>"><?= escape($content['contact_phone'] ?? '+255 762 784 531') ?></a></p></div></div>
                 <div class="contact-detail"><span class="contact-detail-icon">&#9993;</span><div><h4>Email</h4><p><a href="mailto:<?= escape($content['contact_email1'] ?? 'info@bmsl.co.tz') ?>"><?= escape($content['contact_email1'] ?? 'info@bmsl.co.tz') ?></a><?php if (!empty($content['contact_email2'])): ?><br><a href="mailto:<?= escape($content['contact_email2']) ?>"><?= escape($content['contact_email2']) ?></a><?php endif; ?></p></div></div>
@@ -240,16 +240,16 @@ if (!$modal) continue;
             </div>
             <div class="animate-in-right">
                 <div class="form-card">
-                    <h3>Send Us a Message</h3>
+                    <h3><?= escape($content['form_heading'] ?? 'Send Us a Message') ?></h3>
                     <div class="form-success" id="formSuccess"></div>
                     <form id="contactForm" novalidate>
                         <input type="hidden" name="csrf_token" id="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                        <div class="form-group"><label for="form_name">Name *</label><input type="text" id="form_name" name="name" placeholder="Your full name" required><div class="form-error" id="error_name">Please enter your name.</div></div>
-                        <div class="form-group"><label for="form_email">Email *</label><input type="email" id="form_email" name="email" placeholder="your@email.com" required><div class="form-error" id="error_email">Please enter a valid email.</div></div>
-                        <div class="form-group"><label for="form_phone">Phone</label><input type="tel" id="form_phone" name="phone" placeholder="+255 XXX XXX XXX"><div class="form-error" id="error_phone">Please enter a valid phone number.</div></div>
-                        <div class="form-group"><label for="form_company">Company</label><input type="text" id="form_company" name="company" placeholder="Your company name"></div>
-                        <div class="form-group"><label for="form_message">Message *</label><textarea id="form_message" name="message" placeholder="Tell us about your project..." required></textarea><div class="form-error" id="error_message">Please enter at least 10 characters.</div></div>
-                        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Send Message</button>
+                        <div class="form-group"><label for="form_name"><?= escape($content['form_label_name'] ?? 'Name *') ?></label><input type="text" id="form_name" name="name" placeholder="<?= escape($content['form_placeholder_name'] ?? 'Your full name') ?>" required><div class="form-error" id="error_name"><?= escape($content['form_error_name'] ?? 'Please enter your name.') ?></div></div>
+                        <div class="form-group"><label for="form_email"><?= escape($content['form_label_email'] ?? 'Email *') ?></label><input type="email" id="form_email" name="email" placeholder="<?= escape($content['form_placeholder_email'] ?? 'your@email.com') ?>" required><div class="form-error" id="error_email"><?= escape($content['form_error_email'] ?? 'Please enter a valid email.') ?></div></div>
+                        <div class="form-group"><label for="form_phone"><?= escape($content['form_label_phone'] ?? 'Phone') ?></label><input type="tel" id="form_phone" name="phone" placeholder="<?= escape($content['form_placeholder_phone'] ?? '+255 XXX XXX XXX') ?>"><div class="form-error" id="error_phone"><?= escape($content['form_error_phone'] ?? 'Please enter a valid phone number.') ?></div></div>
+                        <div class="form-group"><label for="form_company"><?= escape($content['form_label_company'] ?? 'Company') ?></label><input type="text" id="form_company" name="company" placeholder="<?= escape($content['form_placeholder_company'] ?? 'Your company name') ?>"></div>
+                        <div class="form-group"><label for="form_message"><?= escape($content['form_label_message'] ?? 'Message *') ?></label><textarea id="form_message" name="message" placeholder="<?= escape($content['form_placeholder_message'] ?? 'Tell us about your project...') ?>" required></textarea><div class="form-error" id="error_message"><?= escape($content['form_error_message'] ?? 'Please enter at least 10 characters.') ?></div></div>
+                        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;"><?= escape($content['form_submit_text'] ?? 'Send Message') ?></button>
                     </form>
                 </div>
             </div>
