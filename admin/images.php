@@ -129,6 +129,9 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                         <option value="team-2.webp">Team Member 2</option>
                         <option value="team-3.webp">Team Member 3</option>
                         </optgroup>
+                        <optgroup label="Director">
+                        <option value="director.webp">Director Photo</option>
+                        </optgroup>
                         <optgroup label="Legal">
                         <option value="certificate.webp">Certificate of Incorporation</option>
                         <option value="tra-registration.webp">TRA Registration</option>

@@ -59,6 +59,26 @@ require_once __DIR__ . '/includes/header.php';
     <div class="scroll-indicator" aria-hidden="true"></div>
 </section>
 
+<section class="section section-alt" id="director">
+    <div class="container">
+        <h2 class="section-title animate-in"><?= escape($content['director_heading'] ?? "Director's Message") ?></h2>
+        <div class="director-grid">
+            <div class="director-image animate-in-left">
+                <img src="assets/images/director.webp" alt="<?= escape($content['director_name'] ?? 'Director') ?>" loading="lazy">
+            </div>
+            <div class="director-message animate-in-right">
+                <?php foreach (explode("\n\n", $content['director_message'] ?? '') as $p): $t = trim($p); if ($t): ?>
+                <p><?= escape($t) ?></p>
+                <?php endif; endforeach; ?>
+                <div class="director-signature">
+                    <strong><?= escape($content['director_name'] ?? '') ?></strong>
+                    <span><?= escape($content['director_title'] ?? '') ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="section" id="about">
     <div class="container">
         <div class="about-grid">
