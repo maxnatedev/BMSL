@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="login-card">
-        <img src="../assets/images/logo-blue.png" alt="<?= escape(SITE_NAME) ?>" class="admin-logo">
+        <img src="../assets/images/logo-original.png" alt="<?= escape(SITE_NAME) ?>" class="admin-logo">
         <h1>Admin Login</h1>
         <p><?= escape(SITE_NAME) ?></p>
         <?php if ($error): ?><div class="error"><?= escape($error) ?></div><?php endif; ?>

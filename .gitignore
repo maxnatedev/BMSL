@@ -1,5 +1,5 @@
 .env
 .playwright-mcp/
 test_*
-*.png
-reference-*
+reference-*.png
+.gstack/
