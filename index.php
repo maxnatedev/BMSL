@@ -179,8 +179,8 @@ if (!$modal) continue;
 
 <section class="section" id="team">
     <div class="container">
-        <h2 class="section-title animate-in">Our Team</h2>
-        <p class="section-subtitle animate-in">Experienced professionals dedicated to delivering excellence in every project.</p>
+        <h2 class="section-title animate-in"><?= escape($content['team_heading'] ?? 'Our Team') ?></h2>
+        <p class="section-subtitle animate-in"><?= escape($content['team_subtitle'] ?? 'Experienced professionals dedicated to delivering excellence in every project.') ?></p>
         <div class="team-grid">
             <?php for ($i = 1; $i <= 3; $i++):
             $name = $content['team_' . $i . '_name'] ?? '';
