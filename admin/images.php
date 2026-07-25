@@ -2,37 +2,39 @@
 require_once __DIR__ . '/../includes/config.php';
 if (!isset($_SESSION['admin_id'])) redirect('login.php');
 
-$uploadDir = __DIR__ . '/../assets/images/';
-$allowedTypes = ['image/webp', 'image/jpeg', 'image/png'];
+$imgDir = __DIR__ . '/../assets/images/';
+$fileDir = __DIR__ . '/../uploads/';
+$allowedTypes = ['image/webp', 'image/jpeg', 'image/png', 'application/pdf'];
 $maxSize = 250 * 1024;
+$pdfMaxSize = 10 * 1024 * 1024;
 
 $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
     $file = $_FILES['image'];
     $targetName = basename($_POST['target'] ?? '');
+    $isPdf = pathinfo($targetName, PATHINFO_EXTENSION) === 'pdf';
 
     if ($file['error'] !== UPLOAD_ERR_OK) {
         $message = 'Upload failed.';
-    } elseif ($file['size'] > $maxSize) {
-        $message = 'File too large. Max 250KB.';
+    } elseif (($isPdf && $file['size'] > $pdfMaxSize) || (!$isPdf && $file['size'] > $maxSize)) {
+        $message = 'File too large. ' . ($isPdf ? 'Max 10MB.' : 'Max 250KB.');
     } elseif (!in_array($file['type'], $allowedTypes)) {
-        $message = 'Only WebP, JPEG, and PNG allowed.';
+        $message = 'Only WebP, JPEG, PNG, and PDF allowed.';
     } elseif (!$targetName) {
         $message = 'No target specified.';
     } else {
-        $ext = pathinfo($targetName, PATHINFO_EXTENSION);
-        if (!$ext) $targetName .= '.webp';
-        $destPath = $uploadDir . $targetName;
+        $destPath = $isPdf ? ($fileDir . $targetName) : ($imgDir . $targetName);
         if (move_uploaded_file($file['tmp_name'], $destPath)) {
-            $message = 'Image uploaded successfully.';
+            $message = 'File uploaded successfully.';
         } else {
             $message = 'Failed to save file.';
         }
     }
 }
 
-$images = glob($uploadDir . '*.{webp,jpg,jpeg,png}', GLOB_BRACE);
+$images = glob($imgDir . '*.{webp,jpg,jpeg,png}', GLOB_BRACE);
+$pdfs = glob($fileDir . '*.pdf');
 
 require_once __DIR__ . '/../includes/database.php';
 $db = Database::getInstance();
@@ -130,6 +132,9 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                         <optgroup label="Legal">
                         <option value="certificate.webp">Certificate of Incorporation</option>
                         <option value="tra-registration.webp">TRA Registration</option>
+                        </optgroup>
+                        <optgroup label="Documents">
+                        <option value="company-profile.pdf">Company Profile PDF</option>
                         </optgroup>
                     </select>
                 </div>

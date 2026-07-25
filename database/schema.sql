@@ -74,7 +74,7 @@ INSERT INTO `site_content` (`page_section`, `content`) VALUES
 ('team_2_name','Sarah Lema'),('team_2_role','HSE Manager'),('team_2_exp','15+ years experience'),('team_2_bio','Ensuring the highest safety standards across all operations and client engagements.'),
 ('team_3_name','David Shayo'),('team_3_role','Operations Director'),('team_3_exp','18+ years experience'),('team_3_bio','Overseeing project delivery, logistics, and operational excellence across all service lines.'),
 ('hero_badge','Brethren Mining Solution Limited'),
-('cta_1_label','Company Profile'),('cta_1_url','assets/files/company-profile.pdf'),
+('cta_1_label','Company Profile'),('cta_1_url','uploads/company-profile.pdf'),
 ('cta_2_label','Explore Services'),('cta_2_url','#services'),
 ('contact_address','Nyamongo, Tarime, Tanzania'),
 ('contact_phone','+255 762 784 531'),
