@@ -105,7 +105,7 @@ INSERT INTO `site_content` (`page_section`, `content`) VALUES
 ('vmv_subtitle','Guided by a clear purpose and strong principles that define who we are and how we operate.'),
 ('why_heading','Why Choose Us'),
 ('why_subtitle','What sets us apart in the mining and industrial solutions landscape.'),
-('contact_info_heading','Contact Information'),
+('contact_info_heading','Contact Information'),('contact_label_address','Address'),('contact_label_phone','Phone'),('contact_label_email','Email'),('contact_label_website','Website'),
 ('form_heading','Send Us a Message'),
 ('form_label_name','Name *'),('form_label_email','Email *'),('form_label_phone','Phone'),('form_label_company','Company'),('form_label_message','Message *'),
 ('form_placeholder_name','Your full name'),('form_placeholder_email','your@email.com'),('form_placeholder_phone','+255 XXX XXX XXX'),('form_placeholder_company','Your company name'),('form_placeholder_message','Tell us about your project...'),
