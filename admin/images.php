@@ -61,12 +61,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
         $msgType = 'error';
     } else {
         $destPath = $isPdf ? ($fileDir . $targetName) : ($imgDir . $targetName);
-        if (move_uploaded_file($file['tmp_name'], $destPath)) {
-            $message = 'File uploaded successfully.';
-            $msgType = 'success';
+        $targetExt = strtolower(pathinfo($targetName, PATHINFO_EXTENSION));
+
+        if ($targetExt === 'webp') {
+            $srcMime = mime_content_type($file['tmp_name']);
+            if ($srcMime === 'image/webp') {
+                if (move_uploaded_file($file['tmp_name'], $destPath)) {
+                    $message = 'File uploaded successfully.';
+                    $msgType = 'success';
+                } else {
+                    $message = 'Failed to save file — check folder permissions.';
+                    $msgType = 'error';
+                }
+            } else {
+                switch ($srcMime) {
+                    case 'image/jpeg': $src = imagecreatefromjpeg($file['tmp_name']); break;
+                    case 'image/png': $src = imagecreatefrompng($file['tmp_name']); break;
+                    default: $src = false;
+                }
+                if ($src && imagewebp($src, $destPath, 85)) {
+                    imagedestroy($src);
+                    $message = 'File uploaded and converted to WebP.';
+                    $msgType = 'success';
+                } else {
+                    if ($src) imagedestroy($src);
+                    $message = 'Image conversion to WebP failed.';
+                    $msgType = 'error';
+                }
+            }
         } else {
-            $message = 'Failed to save file — check folder permissions.';
-            $msgType = 'error';
+            if (move_uploaded_file($file['tmp_name'], $destPath)) {
+                $message = 'File uploaded successfully.';
+                $msgType = 'success';
+            } else {
+                $message = 'Failed to save file — check folder permissions.';
+                $msgType = 'error';
+            }
         }
     }
 }
