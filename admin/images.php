@@ -44,17 +44,26 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Images - Admin - <?= escape(SITE_NAME) ?></title>
+    <title>Media - Admin - <?= escape(SITE_NAME) ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', system-ui, sans-serif; background: #f0f2f5; display: flex; }
-        .sidebar { width: 240px; background: #233d7e; min-height: 100vh; padding: 24px 0; display: flex; flex-direction: column; }
-        .sidebar .sidebar-logo { padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 16px; }
-        .sidebar .sidebar-logo img { max-width: 180px; height: auto; }
-        .sidebar a { display: block; padding: 12px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; }
-        .sidebar a:hover, .sidebar a.active { background: rgba(255,255,255,0.06); color: #F7941D; }
-        .main { flex: 1; padding: 30px; }
+        .sidebar { width: 240px; background: #233d7e; min-height: 100vh; padding: 0; display: flex; flex-direction: column; flex-shrink: 0; }
+        .sidebar-logo { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: center; }
+        .sidebar-logo img { max-width: 160px; height: auto; }
+        .sidebar-nav { padding: 8px 0; flex: 1; display: flex; flex-direction: column; }
+        .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.88rem; transition: all 0.15s; border-left: 3px solid transparent; }
+        .sidebar-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .sidebar-item.active { background: rgba(255,255,255,0.08); color: #F7941D; border-left-color: #F7941D; }
+        .sidebar-icon { font-size: 0.75rem; width: 18px; text-align: center; flex-shrink: 0; }
+        .sidebar-group { margin: 4px 0; }
+        .sidebar-group-title { padding: 8px 20px 4px; font-size: 0.7rem; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .sidebar-sub { padding-left: 48px; font-size: 0.84rem; }
+        .sidebar-spacer { flex: 1; }
+        .sidebar-logout { border-top: 1px solid rgba(255,255,255,0.06); margin-top: 8px; padding-top: 12px; color: rgba(255,255,255,0.4); }
+        .sidebar-logout:hover { color: #dc3545 !important; }
+        .main { flex: 1; padding: 30px; min-width: 0; }
         .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .header-bar h1 { font-size: 1.5rem; color: #233d7e; }
         .header-bar a { color: #77797d; text-decoration: none; font-size: 0.9rem; }
@@ -82,17 +91,10 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-logo"><img src="../assets/images/logo-white.png" alt="<?= escape(SITE_NAME) ?>"></div>
-        <a href="dashboard.php">Dashboard</a>
-        <a href="content.php">Site Content</a>
-        <a href="images.php" class="active">Images</a>
-        <a href="../">View Site</a>
-        <a href="logout.php" style="margin-top:40px;color:rgba(255,255,255,0.4);">Logout</a>
-    </div>
+<?php require_once __DIR__ . '/../includes/admin_sidebar.php'; ?>
     <div class="main">
         <div class="header-bar">
-            <h1>Images</h1>
+            <h1>Media</h1>
             <a href="dashboard.php">Back to Dashboard</a>
         </div>
 
@@ -101,7 +103,7 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
         <?php endif; ?>
 
         <form method="post" enctype="multipart/form-data" class="upload-form">
-            <h3>Replace an Image</h3>
+            <h3>Replace a File</h3>
             <div class="form-row">
                 <div class="form-group">
                     <label for="target">Image to replace</label>
