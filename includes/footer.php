@@ -30,9 +30,9 @@
                         <li><a href="mailto:<?= escape($content['contact_email1'] ?? '') ?>"><?= escape($content['contact_email1'] ?? 'info@bmsl.co.tz') ?></a></li>
                     </ul>
                     <div class="footer-social">
-                        <a href="#" aria-label="Facebook" class="social-link">FB</a>
-                        <a href="#" aria-label="LinkedIn" class="social-link">LI</a>
-                        <a href="#" aria-label="Twitter" class="social-link">TW</a>
+                        <a href="<?= escape($content['social_url_facebook'] ?? '#') ?>" aria-label="Facebook" class="social-link">FB</a>
+                        <a href="<?= escape($content['social_url_linkedin'] ?? '#') ?>" aria-label="LinkedIn" class="social-link">LI</a>
+                        <a href="<?= escape($content['social_url_twitter'] ?? '#') ?>" aria-label="Twitter" class="social-link">TW</a>
                     </div>
                 </div>
             </div>
