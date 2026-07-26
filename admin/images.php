@@ -83,6 +83,7 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
         .form-group select, .form-group input[type=file] { width: 100%; padding: 10px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
         .btn { padding: 10px 24px; background: #F7941D; color: #fff; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .btn:hover { background: #e08515; }
+        .grid-section-title { font-size: 0.9rem; color: #233d7e; margin: 28px 0 12px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 8px; border-bottom: 2px solid #F7941D; }
         .file-input-wrap { display: flex; flex-direction: column; gap: 4px; }
         .form-group input[type=file] { box-sizing: border-box; overflow: visible; width: auto !important; padding: 0 !important; border: none !important; }
         .btn-file { background: #233d7e; display: inline-block; padding: 10px 24px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: #fff; }
@@ -109,12 +110,17 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                     <label for="target">Image to replace</label>
                     <select name="target" id="target" required>
                         <option value="">Select image...</option>
-                        <optgroup label="Site">
+                        <optgroup label="Branding &amp; Logos">
+                        <option value="logo-white.png">Header &amp; Footer Logo</option>
+                        <option value="logo-blue.png">Admin Logo (light background)</option>
+                        <option value="logo-original.png">Admin Login Logo (original)</option>
+                        <option value="favicon.ico">Favicon (ICO)</option>
+                        <option value="favicon.svg">Favicon (SVG)</option>
+                        <option value="favicon-96x96.png">Favicon (96x96 PNG)</option>
+                        </optgroup>
+                        <optgroup label="Hero &amp; About">
                         <option value="hero.webp">Hero Background</option>
-                        <option value="about.webp">About Section</option>
-                        <option value="logo-white.png">Header Logo</option>
-                        <option value="logo-blue.png">Admin Logo (light bg)</option>
-                        <option value="logo-original.png">Admin Logo (original)</option>
+                        <option value="about.webp">About Section Image</option>
                         </optgroup>
                         <optgroup label="Services">
                         <option value="service-ppe.webp">PPE Supply</option>
@@ -126,15 +132,13 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                         <option value="service-hse.webp">HSE Consultancy</option>
                         <option value="service-mining.webp">Mining Support</option>
                         </optgroup>
-                        <optgroup label="Team">
+                        <optgroup label="Team &amp; Leadership">
                         <option value="team-1.webp">Team Member 1</option>
                         <option value="team-2.webp">Team Member 2</option>
                         <option value="team-3.webp">Team Member 3</option>
-                        </optgroup>
-                        <optgroup label="Director">
                         <option value="director.webp">Director Photo</option>
                         </optgroup>
-                        <optgroup label="Legal">
+                        <optgroup label="Legal &amp; Compliance">
                         <option value="certificate.webp">Certificate of Incorporation</option>
                         <option value="tra-registration.webp">TRA Registration</option>
                         </optgroup>
@@ -169,8 +173,32 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
             </div>
         </form>
 
+        <?php
+        $categories = [
+            'Branding &amp; Logos' => ['logo-', 'favicon'],
+            'Hero &amp; About' => ['hero.', 'about.'],
+            'Services' => ['service-'],
+            'Team &amp; Leadership' => ['team-', 'director.'],
+            'Legal &amp; Compliance' => ['certificate.', 'tra-registration.'],
+        ];
+        $grouped = [];
+        $uncategorized = [];
+        foreach ($images as $img) {
+            $name = basename($img);
+            $cat = null;
+            foreach ($categories as $label => $prefixes) {
+                foreach ($prefixes as $pfx) {
+                    if (strpos($name, $pfx) === 0) { $cat = $label; break 2; }
+                }
+            }
+            if ($cat) { $grouped[$cat][] = $img; } else { $uncategorized[] = $img; }
+        }
+        foreach ($categories as $label => $_):
+            if (!empty($grouped[$label])):
+        ?>
+        <h3 class="grid-section-title"><?= $label ?></h3>
         <div class="grid">
-            <?php foreach ($images as $img): $name = basename($img); $size = filesize($img); ?>
+            <?php foreach ($grouped[$label] as $img): $name = basename($img); $size = filesize($img); ?>
             <div class="image-card">
                 <img src="../assets/images/<?= urlencode($name) ?>" alt="<?= escape($name) ?>" loading="lazy">
                 <div class="name"><?= escape($name) ?></div>
@@ -178,6 +206,19 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
             </div>
             <?php endforeach; ?>
         </div>
+        <?php endif; endforeach; ?>
+        <?php if (!empty($uncategorized)): ?>
+        <h3 class="grid-section-title">Other</h3>
+        <div class="grid">
+            <?php foreach ($uncategorized as $img): $name = basename($img); $size = filesize($img); ?>
+            <div class="image-card">
+                <img src="../assets/images/<?= urlencode($name) ?>" alt="<?= escape($name) ?>" loading="lazy">
+                <div class="name"><?= escape($name) ?></div>
+                <div class="size"><?= round($size / 1024, 1) ?> KB</div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
     </div>
 </body>
 </html>
