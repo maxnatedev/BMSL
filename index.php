@@ -67,7 +67,7 @@ require_once __DIR__ . '/includes/header.php';
                 <img src="assets/images/director.webp" alt="<?= escape($content['director_name'] ?? 'Director') ?>" loading="lazy">
             </div>
             <div class="director-message animate-in-right">
-                <?php foreach (explode("\n\n", $content['director_message'] ?? '') as $p): $t = trim($p); if ($t): ?>
+                <?php foreach (explode('|||', $content['director_message'] ?? '') as $p): $t = trim($p); if ($t): ?>
                 <p><?= escape($t) ?></p>
                 <?php endif; endforeach; ?>
                 <div class="director-signature">
