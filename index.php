@@ -231,6 +231,7 @@ if (!$modal) continue;
     </div>
 </section>
 
+<?php if (false): ?>
 <section class="section section-alt" id="legal">
     <div class="container">
         <h2 class="section-title animate-in"><?= escape($content['legal_heading'] ?? 'Legal & Compliance') ?></h2>
@@ -244,6 +245,7 @@ if (!$modal) continue;
 
 <div class="modal-overlay" id="modal-cert"><div class="modal-content"><button class="modal-close" aria-label="Close">&times;</button><h2><?= escape($content['legal_card_1'] ?? 'Certificate of Incorporation') ?></h2><img src="assets/images/certificate.webp" alt="<?= escape($content['legal_cert_alt'] ?? 'Certificate of Incorporation') ?>" loading="lazy"></div></div>
 <div class="modal-overlay" id="modal-tra"><div class="modal-content"><button class="modal-close" aria-label="Close">&times;</button><h2><?= escape($content['legal_card_2'] ?? 'TRA Registration') ?></h2><img src="assets/images/tra-registration.webp" alt="<?= escape($content['legal_tra_alt'] ?? 'TRA Registration') ?>" loading="lazy"></div></div>
+<?php endif; ?>
 
 <section class="section" id="contact">
     <div class="container">
