@@ -225,7 +225,7 @@ ul { list-style: none; }
   cursor: pointer; position: relative; overflow: hidden;
 }
 .service-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
-.service-image { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.5s ease; }
+.service-image { width: 100%; height: 200px; object-fit: contain; display: block; transition: transform 0.5s ease; background: var(--section-bg); }
 .service-card:hover .service-image { transform: scale(1.05); }
 .service-body { padding: 20px 22px 28px; text-align: center; }
 .service-body h3 { font-size: 1rem; color: var(--primary); margin-bottom: 0.5rem; }
@@ -238,7 +238,7 @@ ul { list-style: none; }
   overflow: hidden; text-align: center; transition: all var(--transition);
 }
 .team-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
-.team-photo { width: 100%; height: 300px; object-fit: cover; transition: transform var(--transition); }
+.team-photo { width: 100%; height: 300px; object-fit: contain; transition: transform var(--transition); background: var(--section-bg); }
 .team-card:hover .team-photo { transform: scale(1.03); }
 .team-info { padding: 24px 20px; }
 .team-info h3 { font-size: 1.1rem; color: var(--primary); }
