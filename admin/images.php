@@ -175,6 +175,8 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
         .form-group { flex: 1; min-width: 200px; }
         .form-group label { display: block; font-size: 0.85rem; font-weight: 500; color: #233d7e; margin-bottom: 6px; }
         .form-group select, .form-group input[type=file] { width: 100%; padding: 10px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
+        .form-group input[type=file]::-webkit-file-upload-button { cursor: pointer; }
+        .form-group input[type=file]:hover { cursor: pointer; }
         .form-group input[type=file] { cursor: pointer; }
         .btn { padding: 10px 24px; background: #F7941D; color: #fff; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .btn:hover { background: #e08515; }
