@@ -37,8 +37,8 @@ unset($_SESSION['flash']);
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', system-ui, sans-serif; background: #f0f2f5; display: flex; }
-        .sidebar { width: 240px; background: #233d7e; min-height: 100vh; padding: 0; display: flex; flex-direction: column; flex-shrink: 0; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #f0f2f5; display: flex; height: 100vh; overflow: hidden; }
+        .sidebar { width: 240px; background: #233d7e; height: 100vh; padding: 0; display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; }
         .sidebar-logo { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: center; }
         .sidebar-logo img { max-width: 160px; height: auto; }
         .sidebar-nav { padding: 8px 0; flex: 1; display: flex; flex-direction: column; }
@@ -52,7 +52,7 @@ unset($_SESSION['flash']);
         .sidebar-spacer { flex: 1; }
         .sidebar-logout { border-top: 1px solid rgba(255,255,255,0.06); margin-top: 8px; padding-top: 12px; color: rgba(255,255,255,0.4); }
         .sidebar-logout:hover { color: #dc3545 !important; }
-        .main { flex: 1; padding: 30px; min-width: 0; }
+        .main { flex: 1; padding: 30px; min-width: 0; height: 100vh; overflow-y: auto; }
         .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .header-bar h1 { font-size: 1.5rem; color: #233d7e; }
         .header-bar a { color: #77797d; text-decoration: none; font-size: 0.9rem; }
