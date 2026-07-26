@@ -1,9 +1,6 @@
 .env
 .playwright-mcp/
+*.png
 test_*
-reference-*.png
-bmsl-*.png
-admin-*.png
-team-*.png
 uploads/
 .gstack/
