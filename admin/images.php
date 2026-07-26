@@ -74,59 +74,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && isset($_
     if (!$csrfOk) {
         $message = 'Invalid security token. Please refresh and try again.';
         $msgType = 'error';
-    } elseif ($_POST['action'] === 'replace') {
-        // --- Replace existing file ---
+    } else {
         $file = $_FILES['image'];
-        $targetName = basename($_POST['target'] ?? '');
-        $isPdf = pathinfo($targetName, PATHINFO_EXTENSION) === 'pdf';
-
-        if (!$targetName || !in_array($targetName, $allowedTargets)) {
-            $message = 'Invalid upload target.';
-            $msgType = 'error';
-        } elseif ($file['error'] !== UPLOAD_ERR_OK) {
-            $message = $uploadErrors[$file['error']] ?? 'Upload failed (error code ' . $file['error'] . ').';
-            $msgType = 'error';
-        } elseif (($isPdf && $file['size'] > $pdfMaxSize) || (!$isPdf && $file['size'] > $maxSize)) {
-            $message = 'File too large. ' . ($isPdf ? 'Max 10MB.' : 'Max 250KB.');
-            $msgType = 'error';
-        } elseif (!in_array(mime_content_type($file['tmp_name']), $allowedMimes)) {
-            $message = 'Invalid file type. Allowed: WebP, JPEG, PNG, SVG, ICO, PDF.';
-            $msgType = 'error';
-        } else {
-            $destPath = $isPdf ? ($fileDir . $targetName) : ($imgDir . $targetName);
-            $saveResult = saveUploadedImage($file, $destPath);
-            $message = $saveResult['message'];
-            $msgType = $saveResult['type'];
-        }
-    } elseif ($_POST['action'] === 'new') {
-        // --- Upload new file, auto-convert to WebP ---
-        $file = $_FILES['image'];
+        $target = $_POST['target'] ?? '';
 
         if ($file['error'] !== UPLOAD_ERR_OK) {
             $message = $uploadErrors[$file['error']] ?? 'Upload failed (error code ' . $file['error'] . ').';
             $msgType = 'error';
-        } elseif ($file['size'] > $maxSize) {
-            $message = 'File too large. Max 250KB.';
-            $msgType = 'error';
-        } else {
-            $srcMime = mime_content_type($file['tmp_name']);
-            $imageMimes = ['image/webp', 'image/jpeg', 'image/png', 'image/gif', 'image/bmp'];
-            if (!in_array($srcMime, $imageMimes)) {
-                $message = 'Invalid image type. Allowed: JPEG, PNG, GIF, BMP, WebP.';
+        } elseif ($target === '__new__') {
+            // --- New file upload ---
+            if ($file['size'] > $maxSize) {
+                $message = 'File too large. Max 250KB.';
                 $msgType = 'error';
             } else {
-                $baseName = trim(basename($_POST['filename'] ?? ''));
-                if ($baseName === '') {
-                    $baseName = 'image-' . date('Ymd-His') . '-' . substr(bin2hex(random_bytes(4)), 0, 6);
+                $srcMime = mime_content_type($file['tmp_name']);
+                if (!in_array($srcMime, ['image/webp', 'image/jpeg', 'image/png', 'image/gif', 'image/bmp'])) {
+                    $message = 'Invalid image type. Allowed: JPEG, PNG, GIF, BMP, WebP.';
+                    $msgType = 'error';
+                } else {
+                    $baseName = trim(basename($_POST['filename'] ?? ''));
+                    if ($baseName === '') {
+                        $baseName = 'image-' . date('Ymd-His') . '-' . substr(bin2hex(random_bytes(4)), 0, 6);
+                    }
+                    $baseName = preg_replace('/\.[^.]+$/', '', $baseName);
+                    $baseName = preg_replace('/[^a-zA-Z0-9_-]/', '-', $baseName);
+                    if ($baseName === '') $baseName = 'untitled';
+                    $destPath = $imgDir . $baseName . '.webp';
+                    $saveResult = saveUploadedImage($file, $destPath);
+                    $message = $saveResult['message'];
+                    $msgType = $saveResult['type'];
                 }
-                $baseName = preg_replace('/\.[^.]+$/', '', $baseName); // strip extension if user added one
-                $baseName = preg_replace('/[^a-zA-Z0-9_-]/', '-', $baseName); // sanitize
-                if ($baseName === '') $baseName = 'untitled';
-                $destPath = $imgDir . $baseName . '.webp';
+            }
+        } elseif (in_array($target, $allowedTargets)) {
+            // --- Replace existing file ---
+            $isPdf = pathinfo($target, PATHINFO_EXTENSION) === 'pdf';
+            if (($isPdf && $file['size'] > $pdfMaxSize) || (!$isPdf && $file['size'] > $maxSize)) {
+                $message = 'File too large. ' . ($isPdf ? 'Max 10MB.' : 'Max 250KB.');
+                $msgType = 'error';
+            } elseif (!in_array(mime_content_type($file['tmp_name']), $allowedMimes)) {
+                $message = 'Invalid file type. Allowed: WebP, JPEG, PNG, SVG, ICO, PDF.';
+                $msgType = 'error';
+            } else {
+                $destPath = $isPdf ? ($fileDir . $target) : ($imgDir . $target);
                 $saveResult = saveUploadedImage($file, $destPath);
                 $message = $saveResult['message'];
                 $msgType = $saveResult['type'];
             }
+        } else {
+            $message = 'Invalid upload target.';
+            $msgType = 'error';
         }
     }
 }
@@ -203,13 +199,13 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
 
         <form method="post" enctype="multipart/form-data" class="upload-form">
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-            <input type="hidden" name="action" value="replace">
-            <h3>Replace a File</h3>
+            <input type="hidden" name="action" value="upload">
+            <h3>Upload an Image</h3>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="target">Image to replace</label>
+                    <label for="target">What are you uploading?</label>
                     <select name="target" id="target" required>
-                        <option value="">Select image...</option>
+                        <option value="">Select where this goes...</option>
                         <optgroup label="Branding &amp; Logos">
                         <option value="logo-white.png">Header &amp; Footer Logo</option>
                         <option value="logo-blue.png">Admin Logo (light background)</option>
@@ -223,32 +219,40 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                         <option value="about.webp">About Section Image</option>
                         </optgroup>
                         <optgroup label="Services">
-                        <option value="service-ppe.webp">PPE Supply</option>
-                        <option value="service-maintenance.webp">Maintenance</option>
-                        <option value="service-construction.webp">Construction</option>
-                        <option value="service-fabrication.webp">Fabrication</option>
-                        <option value="service-electrical.webp">Electrical Installation</option>
-                        <option value="service-branding.webp">Branding</option>
-                        <option value="service-hse.webp">HSE Consultancy</option>
-                        <option value="service-mining.webp">Mining Support</option>
+                        <option value="service-ppe.webp">Service — PPE Supply</option>
+                        <option value="service-maintenance.webp">Service — Maintenance</option>
+                        <option value="service-construction.webp">Service — Construction</option>
+                        <option value="service-fabrication.webp">Service — Fabrication</option>
+                        <option value="service-electrical.webp">Service — Electrical Installation</option>
+                        <option value="service-branding.webp">Service — Branding</option>
+                        <option value="service-hse.webp">Service — HSE Consultancy</option>
+                        <option value="service-mining.webp">Service — Mining Support</option>
                         </optgroup>
                         <optgroup label="Team &amp; Leadership">
-                        <option value="team-1.webp">Team Member 1</option>
-                        <option value="team-2.webp">Team Member 2</option>
-                        <option value="team-3.webp">Team Member 3</option>
-                        <option value="director.webp">Director Photo</option>
+                        <option value="team-1.webp">Team — Member 1 Photo</option>
+                        <option value="team-2.webp">Team — Member 2 Photo</option>
+                        <option value="team-3.webp">Team — Member 3 Photo</option>
+                        <option value="director.webp">Team — Director Photo</option>
                         </optgroup>
                         <optgroup label="Legal &amp; Compliance">
                         <option value="certificate.webp">Certificate of Incorporation</option>
                         <option value="tra-registration.webp">TRA Registration</option>
                         </optgroup>
                         <optgroup label="Documents">
-                        <option value="company-profile.pdf">Company Profile PDF</option>
+                        <option value="company-profile.pdf">Company Profile (PDF)</option>
+                        </optgroup>
+                        <optgroup label="─────────────────">
+                        <option value="__new__"> Upload a NEW image...</option>
                         </optgroup>
                     </select>
                 </div>
+                <div class="form-group" id="newFilenameGroup" style="display:none">
+                    <label for="newFilename">Name for new image</label>
+                    <input type="text" id="newFilename" name="filename" placeholder="e.g. event-photo" style="width:100%;padding:10px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:0.9rem">
+                    <div style="font-size:0.75rem;color:#6B7280;margin-top:4px">Leave blank for auto-name. Saved as .webp automatically.</div>
+                </div>
                 <div class="form-group">
-                    <label id="fileLabel">File (max 250KB, WebP preferred)</label>
+                    <label id="fileLabel">Choose File (max 250KB, WebP preferred)</label>
                     <div>
                         <input type="file" name="image" id="image" accept="image/webp,image/jpeg,image/png" required>
                         <span id="fileName" style="margin-left:8px;font-size:0.85rem;color:#6B7280"></span>
@@ -259,26 +263,26 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                         var target = document.getElementById('target');
                         var label = document.getElementById('fileLabel');
                         var name = document.getElementById('fileName');
+                        var newGroup = document.getElementById('newFilenameGroup');
                         var acceptMap = {
-                            'favicon.ico': { accept: 'image/x-icon,.ico', label: 'File (max 250KB, ICO format)' },
-                            'favicon.svg': { accept: 'image/svg+xml,.svg', label: 'File (max 250KB, SVG format)' },
-                            'favicon-96x96.png': { accept: 'image/png,.png', label: 'File (max 250KB, PNG format)' },
-                            'logo-white.png': { accept: 'image/png,.png', label: 'File (max 250KB, PNG format)' },
-                            'logo-blue.png': { accept: 'image/png,.png', label: 'File (max 250KB, PNG format)' },
-                            'logo-original.png': { accept: 'image/png,.png', label: 'File (max 250KB, PNG format)' },
-                            'company-profile.pdf': { accept: 'application/pdf,.pdf', label: 'File (max 10MB, PDF format)' }
+                            'favicon.ico': { accept: 'image/x-icon,.ico', label: 'Choose File (max 250KB, ICO format)' },
+                            'favicon.svg': { accept: 'image/svg+xml,.svg', label: 'Choose File (max 250KB, SVG format)' },
+                            'favicon-96x96.png': { accept: 'image/png', label: 'Choose File (max 250KB, PNG format)' },
+                            'logo-white.png': { accept: 'image/png', label: 'Choose File (max 250KB, PNG format)' },
+                            'logo-blue.png': { accept: 'image/png', label: 'Choose File (max 250KB, PNG format)' },
+                            'logo-original.png': { accept: 'image/png', label: 'Choose File (max 250KB, PNG format)' },
+                            'company-profile.pdf': { accept: 'application/pdf,.pdf', label: 'Choose File (max 10MB, PDF format)' },
+                            '__new__': { accept: 'image/webp,image/jpeg,image/png,image/gif,image/bmp', label: 'Choose File (max 250KB, auto-converts to WebP)' }
                         };
-                        var defaults = { accept: 'image/webp,image/jpeg,image/png', label: 'File (max 250KB, WebP preferred)' };
-                        function updateAccept() {
-                            var cfg = acceptMap[target.value] || defaults;
+                        var defaults = { accept: 'image/webp,image/jpeg,image/png', label: 'Choose File (max 250KB, WebP preferred)' };
+                        target.addEventListener('change', function(){
+                            var cfg = acceptMap[this.value] || defaults;
                             input.accept = cfg.accept;
                             label.textContent = cfg.label;
-                        }
-                        target.addEventListener('change', updateAccept);
+                            newGroup.style.display = this.value === '__new__' ? 'block' : 'none';
+                        });
                         input.addEventListener('change', function(){
-                            if (this.files && this.files.length > 0) {
-                                name.textContent = this.files[0].name;
-                            }
+                            if (this.files && this.files.length > 0) name.textContent = this.files[0].name;
                         });
                     })();
                     </script>
@@ -287,34 +291,6 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
             </div>
         </form>
 
-        <form method="post" enctype="multipart/form-data" class="upload-form">
-            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-            <input type="hidden" name="action" value="new">
-            <h3>Upload New File</h3>
-            <p style="font-size:0.82rem;color:#77797d;margin-bottom:16px">Upload any image — automatically converted to WebP. Use this to add new photos.</p>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="newFilename">File name (optional)</label>
-                    <input type="text" id="newFilename" name="filename" placeholder="e.g. event-photo" style="width:100%;padding:10px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:0.9rem">
-                    <div style="font-size:0.75rem;color:#6B7280;margin-top:4px">Leave blank for auto-generated name. Extension added automatically.</div>
-                </div>
-                <div class="form-group">
-                    <label>File (max 250KB, auto-converts to WebP)</label>
-                    <div>
-                        <input type="file" name="image" id="newImage" accept="image/webp,image/jpeg,image/png,image/gif,image/bmp" required>
-                        <span id="newFileName" style="margin-left:8px;font-size:0.85rem;color:#6B7280"></span>
-                    </div>
-                    <script>
-                    document.getElementById('newImage').addEventListener('change', function(){
-                        if (this.files && this.files.length > 0) {
-                            document.getElementById('newFileName').textContent = this.files[0].name;
-                        }
-                    });
-                    </script>
-                </div>
-                <button type="submit" class="btn">Upload New</button>
-            </div>
-        </form>
 
         <?php
         $categories = [
