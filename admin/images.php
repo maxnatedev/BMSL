@@ -37,71 +37,101 @@ $uploadErrors = [
 $message = '';
 $msgType = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
-    $file = $_FILES['image'];
-    $targetName = basename($_POST['target'] ?? '');
+function saveUploadedImage($file, $destPath): array {
+    $targetExt = strtolower(pathinfo($destPath, PATHINFO_EXTENSION));
+    if ($targetExt === 'webp') {
+        $srcMime = mime_content_type($file['tmp_name']);
+        if ($srcMime === 'image/webp') {
+            if (move_uploaded_file($file['tmp_name'], $destPath)) {
+                return ['message' => 'File uploaded successfully.', 'type' => 'success'];
+            }
+            return ['message' => 'Failed to save file — check folder permissions.', 'type' => 'error'];
+        }
+        switch ($srcMime) {
+            case 'image/jpeg': $src = imagecreatefromjpeg($file['tmp_name']); break;
+            case 'image/png': $src = imagecreatefrompng($file['tmp_name']); break;
+            case 'image/gif': $src = imagecreatefromgif($file['tmp_name']); break;
+            case 'image/bmp': $src = imagecreatefrombmp($file['tmp_name']); break;
+            default: $src = false;
+        }
+        if ($src && imagewebp($src, $destPath, 85)) {
+            imagedestroy($src);
+            return ['message' => 'File uploaded and converted to WebP.', 'type' => 'success'];
+        }
+        if ($src) imagedestroy($src);
+        return ['message' => 'Image conversion to WebP failed.', 'type' => 'error'];
+    }
+    if (move_uploaded_file($file['tmp_name'], $destPath)) {
+        return ['message' => 'File uploaded successfully.', 'type' => 'success'];
+    }
+    return ['message' => 'Failed to save file — check folder permissions.', 'type' => 'error'];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && isset($_POST['action'])) {
     $csrfOk = isset($_POST['csrf_token']) && hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token']);
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    $isPdf = pathinfo($targetName, PATHINFO_EXTENSION) === 'pdf';
 
     if (!$csrfOk) {
         $message = 'Invalid security token. Please refresh and try again.';
         $msgType = 'error';
-    } elseif (!$targetName || !in_array($targetName, $allowedTargets)) {
-        $message = 'Invalid upload target.';
-        $msgType = 'error';
-    } elseif ($file['error'] !== UPLOAD_ERR_OK) {
-        $message = $uploadErrors[$file['error']] ?? 'Upload failed (error code ' . $file['error'] . ').';
-        $msgType = 'error';
-    } elseif (($isPdf && $file['size'] > $pdfMaxSize) || (!$isPdf && $file['size'] > $maxSize)) {
-        $message = 'File too large. ' . ($isPdf ? 'Max 10MB.' : 'Max 250KB.');
-        $msgType = 'error';
-    } elseif (!in_array(mime_content_type($file['tmp_name']), $allowedMimes)) {
-        $message = 'Invalid file type. Allowed: WebP, JPEG, PNG, SVG, ICO, PDF.';
-        $msgType = 'error';
-    } else {
-        $destPath = $isPdf ? ($fileDir . $targetName) : ($imgDir . $targetName);
-        $targetExt = strtolower(pathinfo($targetName, PATHINFO_EXTENSION));
+    } elseif ($_POST['action'] === 'replace') {
+        // --- Replace existing file ---
+        $file = $_FILES['image'];
+        $targetName = basename($_POST['target'] ?? '');
+        $isPdf = pathinfo($targetName, PATHINFO_EXTENSION) === 'pdf';
 
-        if ($targetExt === 'webp') {
-            $srcMime = mime_content_type($file['tmp_name']);
-            if ($srcMime === 'image/webp') {
-                if (move_uploaded_file($file['tmp_name'], $destPath)) {
-                    $message = 'File uploaded successfully.';
-                    $msgType = 'success';
-                } else {
-                    $message = 'Failed to save file — check folder permissions.';
-                    $msgType = 'error';
-                }
-            } else {
-                switch ($srcMime) {
-                    case 'image/jpeg': $src = imagecreatefromjpeg($file['tmp_name']); break;
-                    case 'image/png': $src = imagecreatefrompng($file['tmp_name']); break;
-                    default: $src = false;
-                }
-                if ($src && imagewebp($src, $destPath, 85)) {
-                    imagedestroy($src);
-                    $message = 'File uploaded and converted to WebP.';
-                    $msgType = 'success';
-                } else {
-                    if ($src) imagedestroy($src);
-                    $message = 'Image conversion to WebP failed.';
-                    $msgType = 'error';
-                }
-            }
+        if (!$targetName || !in_array($targetName, $allowedTargets)) {
+            $message = 'Invalid upload target.';
+            $msgType = 'error';
+        } elseif ($file['error'] !== UPLOAD_ERR_OK) {
+            $message = $uploadErrors[$file['error']] ?? 'Upload failed (error code ' . $file['error'] . ').';
+            $msgType = 'error';
+        } elseif (($isPdf && $file['size'] > $pdfMaxSize) || (!$isPdf && $file['size'] > $maxSize)) {
+            $message = 'File too large. ' . ($isPdf ? 'Max 10MB.' : 'Max 250KB.');
+            $msgType = 'error';
+        } elseif (!in_array(mime_content_type($file['tmp_name']), $allowedMimes)) {
+            $message = 'Invalid file type. Allowed: WebP, JPEG, PNG, SVG, ICO, PDF.';
+            $msgType = 'error';
         } else {
-            if (move_uploaded_file($file['tmp_name'], $destPath)) {
-                $message = 'File uploaded successfully.';
-                $msgType = 'success';
-            } else {
-                $message = 'Failed to save file — check folder permissions.';
+            $destPath = $isPdf ? ($fileDir . $targetName) : ($imgDir . $targetName);
+            $saveResult = saveUploadedImage($file, $destPath);
+            $message = $saveResult['message'];
+            $msgType = $saveResult['type'];
+        }
+    } elseif ($_POST['action'] === 'new') {
+        // --- Upload new file, auto-convert to WebP ---
+        $file = $_FILES['image'];
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            $message = $uploadErrors[$file['error']] ?? 'Upload failed (error code ' . $file['error'] . ').';
+            $msgType = 'error';
+        } elseif ($file['size'] > $maxSize) {
+            $message = 'File too large. Max 250KB.';
+            $msgType = 'error';
+        } else {
+            $srcMime = mime_content_type($file['tmp_name']);
+            $imageMimes = ['image/webp', 'image/jpeg', 'image/png', 'image/gif', 'image/bmp'];
+            if (!in_array($srcMime, $imageMimes)) {
+                $message = 'Invalid image type. Allowed: JPEG, PNG, GIF, BMP, WebP.';
                 $msgType = 'error';
+            } else {
+                $baseName = trim(basename($_POST['filename'] ?? ''));
+                if ($baseName === '') {
+                    $baseName = 'image-' . date('Ymd-His') . '-' . substr(bin2hex(random_bytes(4)), 0, 6);
+                }
+                $baseName = preg_replace('/\.[^.]+$/', '', $baseName); // strip extension if user added one
+                $baseName = preg_replace('/[^a-zA-Z0-9_-]/', '-', $baseName); // sanitize
+                if ($baseName === '') $baseName = 'untitled';
+                $destPath = $imgDir . $baseName . '.webp';
+                $saveResult = saveUploadedImage($file, $destPath);
+                $message = $saveResult['message'];
+                $msgType = $saveResult['type'];
             }
         }
     }
 }
 
-$images = glob($imgDir . '*.{webp,jpg,jpeg,png}', GLOB_BRACE);
+$images = glob($imgDir . '*.{webp,jpg,jpeg,png,svg,ico}', GLOB_BRACE);
 $pdfs = glob($fileDir . '*.pdf');
 
 require_once __DIR__ . '/../includes/database.php';
@@ -173,6 +203,7 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
 
         <form method="post" enctype="multipart/form-data" class="upload-form">
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+            <input type="hidden" name="action" value="replace">
             <h3>Replace a File</h3>
             <div class="form-row">
                 <div class="form-group">
@@ -253,6 +284,35 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                     </script>
                 </div>
                 <button type="submit" class="btn">Upload</button>
+            </div>
+        </form>
+
+        <form method="post" enctype="multipart/form-data" class="upload-form">
+            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+            <input type="hidden" name="action" value="new">
+            <h3>Upload New File</h3>
+            <p style="font-size:0.82rem;color:#77797d;margin-bottom:16px">Upload any image — automatically converted to WebP. Use this to add new photos.</p>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="newFilename">File name (optional)</label>
+                    <input type="text" id="newFilename" name="filename" placeholder="e.g. event-photo" style="width:100%;padding:10px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:0.9rem">
+                    <div style="font-size:0.75rem;color:#6B7280;margin-top:4px">Leave blank for auto-generated name. Extension added automatically.</div>
+                </div>
+                <div class="form-group">
+                    <label>File (max 250KB, auto-converts to WebP)</label>
+                    <div>
+                        <input type="file" name="image" id="newImage" accept="image/webp,image/jpeg,image/png,image/gif,image/bmp" required>
+                        <span id="newFileName" style="margin-left:8px;font-size:0.85rem;color:#6B7280"></span>
+                    </div>
+                    <script>
+                    document.getElementById('newImage').addEventListener('change', function(){
+                        if (this.files && this.files.length > 0) {
+                            document.getElementById('newFileName').textContent = this.files[0].name;
+                        }
+                    });
+                    </script>
+                </div>
+                <button type="submit" class="btn">Upload New</button>
             </div>
         </form>
 
