@@ -178,11 +178,6 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
         .btn { padding: 10px 24px; background: #F7941D; color: #fff; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
         .btn:hover { background: #e08515; }
         .grid-section-title { font-size: 0.9rem; color: #233d7e; margin: 28px 0 12px; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 8px; border-bottom: 2px solid #F7941D; }
-        .file-input-wrap { display: flex; flex-direction: column; gap: 4px; }
-        .form-group input[type=file] { box-sizing: border-box; overflow: visible; width: auto !important; padding: 0 !important; border: none !important; }
-        .btn-file { background: #233d7e; display: inline-block; padding: 10px 24px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: #fff; }
-        .btn-file:hover { background: #1a2f61; }
-        .file-name { font-size: 0.85rem; color: #77797d; }
     </style>
 </head>
 <body>
