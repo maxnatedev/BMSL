@@ -69,7 +69,6 @@ function saveUploadedImage($file, $destPath): array {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && isset($_POST['action'])) {
     $csrfOk = isset($_POST['csrf_token']) && hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token']);
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
     if (!$csrfOk) {
         $message = 'Invalid security token. Please refresh and try again.';
@@ -103,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && isset($_
                     $saveResult = saveUploadedImage($file, $destPath);
                     $message = $saveResult['message'];
                     $msgType = $saveResult['type'];
+                    if ($msgType === 'success') $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
                 }
             }
         } elseif (in_array($target, $allowedTargets)) {
@@ -119,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && isset($_
                 $saveResult = saveUploadedImage($file, $destPath);
                 $message = $saveResult['message'];
                 $msgType = $saveResult['type'];
+                if ($msgType === 'success') $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
             }
         } else {
             $message = 'Invalid upload target.';
