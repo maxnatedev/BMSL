@@ -128,6 +128,8 @@ INSERT INTO `site_content` (`page_section`, `content`) VALUES
 ('social_url_facebook','#'),
 ('social_url_linkedin','#'),
 ('social_url_twitter','#'),
+('footer_credit_text','Built by MAXNATE'),
+('footer_credit_url','https://maxnate.com'),
 ('director_heading','Director\'s Message'),
 ('director_name','Mr. Yusuph Majid Nassor'),
 ('director_title','Director General'),

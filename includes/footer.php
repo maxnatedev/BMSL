@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p><?= escape($content['footer_copyright'] ?? '© ' . date('Y') . ' ' . SITE_NAME . '. All rights reserved.') ?> &nbsp;|&nbsp; Built by <a href="https://maxnate.com" target="_blank" rel="noopener" style="color:#F7941D;text-decoration:none;">MAXNATE</a></p>
+                <p><?= escape($content['footer_copyright'] ?? '© ' . date('Y') . ' ' . SITE_NAME . '. All rights reserved.') ?> &nbsp;|&nbsp; <a href="<?= escape($content['footer_credit_url'] ?? 'https://maxnate.com') ?>" target="_blank" rel="noopener" style="color:#F7941D;text-decoration:none;"><?= escape($content['footer_credit_text'] ?? 'Built by MAXNATE') ?></a></p>
             </div>
         </div>
         <button class="back-to-top" id="backToTop" aria-label="<?= escape($content['back_to_top_label'] ?? 'Back to top') ?>">&#8593;</button>
