@@ -2,10 +2,6 @@
 require_once __DIR__ . '/../includes/config.php';
 if (!isset($_SESSION['admin_id'])) redirect('login.php');
 
-if (!isset($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-
 $imgDir = __DIR__ . '/../assets/images/';
 $fileDir = __DIR__ . '/../uploads/';
 $allowedMimes = ['image/webp', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon', 'application/pdf'];
@@ -68,16 +64,10 @@ function saveUploadedImage($file, $destPath): array {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && isset($_POST['action'])) {
-    $csrfOk = isset($_POST['csrf_token']) && hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token']);
+    $file = $_FILES['image'];
+    $target = $_POST['target'] ?? '';
 
-    if (!$csrfOk) {
-        $message = 'Invalid security token. Please refresh and try again.';
-        $msgType = 'error';
-    } else {
-        $file = $_FILES['image'];
-        $target = $_POST['target'] ?? '';
-
-        if ($file['error'] !== UPLOAD_ERR_OK) {
+    if ($file['error'] !== UPLOAD_ERR_OK) {
             $message = $uploadErrors[$file['error']] ?? 'Upload failed (error code ' . $file['error'] . ').';
             $msgType = 'error';
         } elseif ($target === '__new__') {
@@ -102,7 +92,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && isset($_
                     $saveResult = saveUploadedImage($file, $destPath);
                     $message = $saveResult['message'];
                     $msgType = $saveResult['type'];
-                    if ($msgType === 'success') $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
                 }
             }
         } elseif (in_array($target, $allowedTargets)) {
@@ -119,14 +108,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && isset($_
                 $saveResult = saveUploadedImage($file, $destPath);
                 $message = $saveResult['message'];
                 $msgType = $saveResult['type'];
-                if ($msgType === 'success') $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
             }
         } else {
             $message = 'Invalid upload target.';
             $msgType = 'error';
         }
     }
-}
 
 $images = glob($imgDir . '*.{webp,jpg,jpeg,png,svg,ico}', GLOB_BRACE);
 $pdfs = glob($fileDir . '*.pdf');
@@ -197,7 +184,6 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
         <?php endif; ?>
 
         <form method="post" enctype="multipart/form-data" class="upload-form">
-            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
             <input type="hidden" name="action" value="upload">
             <h3>Upload an Image</h3>
             <div class="form-row">
