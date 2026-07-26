@@ -109,7 +109,7 @@ unset($_SESSION['flash']);
         ];
         $groupRules = [
             'general' => ['hero_','about_','commitment_','page_title','meta_','og_','nav_cta','director_','read_more','back_to_top','form_','legal_','nav_'],
-            'values' => ['values_','why_','vmv_'],
+            'values' => ['values_','why_','vmv_','vision_','mission_'],
             'services' => ['service_','services_'],
             'team' => ['team_'],
             'contact' => ['contact_','footer_','social_'],
