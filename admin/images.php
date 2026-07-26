@@ -2,33 +2,71 @@
 require_once __DIR__ . '/../includes/config.php';
 if (!isset($_SESSION['admin_id'])) redirect('login.php');
 
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 $imgDir = __DIR__ . '/../assets/images/';
 $fileDir = __DIR__ . '/../uploads/';
-$allowedTypes = ['image/webp', 'image/jpeg', 'image/png', 'application/pdf'];
+$allowedMimes = ['image/webp', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon', 'application/pdf'];
 $maxSize = 250 * 1024;
 $pdfMaxSize = 10 * 1024 * 1024;
 
+$allowedTargets = [
+    'logo-white.png', 'logo-blue.png', 'logo-original.png',
+    'favicon.ico', 'favicon.svg', 'favicon-96x96.png',
+    'hero.webp', 'about.webp',
+    'service-ppe.webp', 'service-maintenance.webp', 'service-construction.webp', 'service-fabrication.webp',
+    'service-electrical.webp', 'service-branding.webp', 'service-hse.webp', 'service-mining.webp',
+    'team-1.webp', 'team-2.webp', 'team-3.webp', 'director.webp',
+    'certificate.webp', 'tra-registration.webp',
+    'company-profile.pdf',
+];
+
+$uploadErrors = [
+    UPLOAD_ERR_OK => 'Upload successful.',
+    UPLOAD_ERR_INI_SIZE => 'File exceeds server upload limit (upload_max_filesize).',
+    UPLOAD_ERR_FORM_SIZE => 'File exceeds form size limit.',
+    UPLOAD_ERR_PARTIAL => 'File was only partially uploaded.',
+    UPLOAD_ERR_NO_FILE => 'No file was selected.',
+    UPLOAD_ERR_NO_TMP_DIR => 'Server temporary folder missing.',
+    UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk.',
+    UPLOAD_ERR_EXTENSION => 'Upload stopped by a PHP extension.',
+];
+
 $message = '';
+$msgType = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
     $file = $_FILES['image'];
     $targetName = basename($_POST['target'] ?? '');
+    $csrfOk = isset($_POST['csrf_token']) && hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token']);
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     $isPdf = pathinfo($targetName, PATHINFO_EXTENSION) === 'pdf';
 
-    if ($file['error'] !== UPLOAD_ERR_OK) {
-        $message = 'Upload failed.';
+    if (!$csrfOk) {
+        $message = 'Invalid security token. Please refresh and try again.';
+        $msgType = 'error';
+    } elseif (!$targetName || !in_array($targetName, $allowedTargets)) {
+        $message = 'Invalid upload target.';
+        $msgType = 'error';
+    } elseif ($file['error'] !== UPLOAD_ERR_OK) {
+        $message = $uploadErrors[$file['error']] ?? 'Upload failed (error code ' . $file['error'] . ').';
+        $msgType = 'error';
     } elseif (($isPdf && $file['size'] > $pdfMaxSize) || (!$isPdf && $file['size'] > $maxSize)) {
         $message = 'File too large. ' . ($isPdf ? 'Max 10MB.' : 'Max 250KB.');
-    } elseif (!in_array($file['type'], $allowedTypes)) {
-        $message = 'Only WebP, JPEG, PNG, and PDF allowed.';
-    } elseif (!$targetName) {
-        $message = 'No target specified.';
+        $msgType = 'error';
+    } elseif (!in_array(mime_content_type($file['tmp_name']), $allowedMimes)) {
+        $message = 'Invalid file type. Allowed: WebP, JPEG, PNG, SVG, ICO, PDF.';
+        $msgType = 'error';
     } else {
         $destPath = $isPdf ? ($fileDir . $targetName) : ($imgDir . $targetName);
         if (move_uploaded_file($file['tmp_name'], $destPath)) {
             $message = 'File uploaded successfully.';
+            $msgType = 'success';
         } else {
-            $message = 'Failed to save file.';
+            $message = 'Failed to save file — check folder permissions.';
+            $msgType = 'error';
         }
     }
 }
@@ -100,10 +138,11 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
         </div>
 
         <?php if ($message): ?>
-        <div class="msg <?= strpos($message, 'success') !== false ? 'msg-success' : 'msg-error' ?>"><?= escape($message) ?></div>
+        <div class="msg <?= $msgType === 'success' ? 'msg-success' : 'msg-error' ?>"><?= escape($message) ?></div>
         <?php endif; ?>
 
         <form method="post" enctype="multipart/form-data" class="upload-form">
+            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
             <h3>Replace a File</h3>
             <div class="form-row">
                 <div class="form-group">
@@ -148,23 +187,37 @@ $contentSections = $db->fetchAll('SELECT * FROM site_content ORDER BY id');
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>File (max 250KB, WebP preferred)</label>
+                    <label id="fileLabel">File (max 250KB, WebP preferred)</label>
                     <div>
                         <input type="file" name="image" id="image" accept="image/webp,image/jpeg,image/png" required>
                         <span id="fileName" style="margin-left:8px;font-size:0.85rem;color:#6B7280"></span>
                     </div>
-                    <div id="debugLog" style="margin-top:4px;font-size:0.78rem;color:#6B7280;font-family:monospace"></div>
                     <script>
                     (function(){
                         var input = document.getElementById('image');
-                        var log = document.getElementById('debugLog');
+                        var target = document.getElementById('target');
+                        var label = document.getElementById('fileLabel');
                         var name = document.getElementById('fileName');
-                        function dbg(m){ console.log('[FILE-UPLOAD] '+m); if(log) log.textContent=m; }
-                        if(!input){ dbg('ERROR: input not found'); return; }
-                        dbg('Input exists. noCustomStyle=true');
+                        var acceptMap = {
+                            'favicon.ico': { accept: 'image/x-icon,.ico', label: 'File (max 250KB, ICO format)' },
+                            'favicon.svg': { accept: 'image/svg+xml,.svg', label: 'File (max 250KB, SVG format)' },
+                            'favicon-96x96.png': { accept: 'image/png,.png', label: 'File (max 250KB, PNG format)' },
+                            'logo-white.png': { accept: 'image/png,.png', label: 'File (max 250KB, PNG format)' },
+                            'logo-blue.png': { accept: 'image/png,.png', label: 'File (max 250KB, PNG format)' },
+                            'logo-original.png': { accept: 'image/png,.png', label: 'File (max 250KB, PNG format)' },
+                            'company-profile.pdf': { accept: 'application/pdf,.pdf', label: 'File (max 10MB, PDF format)' }
+                        };
+                        var defaults = { accept: 'image/webp,image/jpeg,image/png', label: 'File (max 250KB, WebP preferred)' };
+                        function updateAccept() {
+                            var cfg = acceptMap[target.value] || defaults;
+                            input.accept = cfg.accept;
+                            label.textContent = cfg.label;
+                        }
+                        target.addEventListener('change', updateAccept);
                         input.addEventListener('change', function(){
-                            var f = this.files;
-                            if(f && f.length>0){ name.textContent = f[0].name; dbg('SELECTED: '+f[0].name); }
+                            if (this.files && this.files.length > 0) {
+                                name.textContent = this.files[0].name;
+                            }
                         });
                     })();
                     </script>
