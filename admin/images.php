@@ -4,6 +4,7 @@ if (!isset($_SESSION['admin_id'])) redirect('login.php');
 
 $imgDir = __DIR__ . '/../assets/images/';
 $fileDir = __DIR__ . '/../uploads/';
+if (!is_dir($fileDir)) mkdir($fileDir, 0755, true);
 $allowedMimes = ['image/webp', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon', 'application/pdf'];
 $maxSize = 250 * 1024;
 $pdfMaxSize = 10 * 1024 * 1024;
